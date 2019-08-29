@@ -319,7 +319,7 @@ void applicationLoop() {
 		psi = processInput(true);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		 glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)screenWidth / (float)screenHeight, 0.02f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)screenWidth / (float)screenHeight, 0.02f, 100.0f);
 
 		// glm::mat4 projection = glm::frustum(-0.005, 0.005, -0.005, 0.005, 0.01, 100.0);
 
@@ -338,8 +338,10 @@ void applicationLoop() {
 		shader.setMatrix4("view", 1, false, glm::value_ptr(view));
 
 		glm::mat4 model = glm::mat4(1.0f);
-	
-		model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0, 1.0, 0.0f));
+
+		//model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0, 1.0, 0.0f));
+		model = glm::translate(model, glm:vec3(-1.0, 0.0, -4.0)); 
+
 		shader.setMatrix4("model", 1, false, glm::value_ptr(model));
 
 
