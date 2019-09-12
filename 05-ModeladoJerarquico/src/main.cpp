@@ -43,7 +43,8 @@ bool exitApp = false;
 int lastMousePosX, offsetX = 0;
 int lastMousePosY, offsetY = 0;
 
-float rot1 = 0.0, rot2 = 0.0;
+float rot1 = 0.0, rot2 = 0.0, rot3 = 0.0, rot4 = 0.0;
+bool sentido = true;
 
 double deltaTime;
 
@@ -58,7 +59,7 @@ bool processInput(bool continueApplication = true);
 
 // Implementacion de todas las funciones.
 void init(int width, int height, std::string strTitle, bool bFullScreen) {
-	
+
 	if (!glfwInit()) {
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		exit(-1);
@@ -189,7 +190,7 @@ void mouseButtonCallback(GLFWwindow* window, int button, int state, int mod) {
 	}
 }
 
-bool processInput(bool continueApplication){
+bool processInput(bool continueApplication) {
 	if (exitApp || glfwWindowShouldClose(window) != 0) {
 		return false;
 	}
@@ -197,23 +198,35 @@ bool processInput(bool continueApplication){
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
 
-	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
-	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		camera->moveFrontCamera(false, deltaTime);
-	if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		camera->moveRightCamera(false, deltaTime);
-	if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera->moveRightCamera(true, deltaTime);
-	if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		camera->mouseMoveCamera(offsetX, offsetY, 0.01);
 	offsetX = 0;
 	offsetY = 0;
 
-	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		sentido = false;
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && sentido)
 		rot1 += 0.001;
-	if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !sentido)
+		rot1 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && sentido)
 		rot2 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !sentido)
+		rot2 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && sentido)
+		rot3 += 0.001;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && sentido)
+		rot4 += 0.001;
+
+	sentido = true;
 
 	glfwPollEvents();
 	return continueApplication;
@@ -225,7 +238,7 @@ void applicationLoop() {
 		psi = processInput(true);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) screenWidth / (float) screenHeight, 0.01f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.01f, 100.0f);
 		glm::mat4 view = camera->getViewMatrix();
 
 		shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
@@ -240,6 +253,8 @@ void applicationLoop() {
 		glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
+		j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
+		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
 
 		// Hueso 1
 		glm::mat4 l1 = glm::translate(j1, glm::vec3(0.25f, 0.0, 0.0));
@@ -249,8 +264,12 @@ void applicationLoop() {
 
 		// Articulacion 2
 		glm::mat4 j2 = glm::translate(j1, glm::vec3(0.5, 0.0f, 0.0f));
+		j2 = glm::rotate(j2, rot3, glm::vec3(0.0, 0.0, 1.0));
+		j2 = glm::rotate(j2, rot4, glm::vec3(1, 0, 0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1)));
+		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
+		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
 
 		// Hueso 2
 		glm::mat4 l2 = glm::translate(j2, glm::vec3(0.25, 0.0, 0.0));
