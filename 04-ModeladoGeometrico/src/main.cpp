@@ -44,6 +44,10 @@ Box box1;
 Box box2;
 Box box3; 
 
+
+bool sentido = true;
+float rot1 = 0.0, rot2 = 0.0, rot3 = 0.0, rot4 = 0.0;
+float rot5 = 0.0, rot6 = 0.0, rot7 = 0.0, rot8 = 0.0;
 bool exitApp = false;
 int lastMousePosX, offSetX = 0;
 int lastMousePosY, offSetY = 0;
@@ -227,6 +231,56 @@ bool processInput(bool continueApplication) {
 	offSetX = 0;
 	offSetY = 0;
 
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+
+		sentido = false;
+
+
+	//Brazo derecho 
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && sentido)
+		rot1 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !sentido)
+		rot1 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && sentido)
+		rot2 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !sentido)
+		rot2 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && sentido)
+		rot3 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && !sentido)
+		rot3 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && sentido)
+		rot4 += 0.001;
+
+	sentido = false;
+//	Brazo izquierdo
+
+
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && sentido)
+		rot5 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && !sentido)
+		rot5 -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && sentido)
+		rot6 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && !sentido)
+		rot6 -= 0.001;
+
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && sentido)
+		rot7 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && !sentido)
+		rot7 -= 0.001;
+
+	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && sentido)
+		rot8 += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !sentido)
+		rot8 -= 0.001;
+
+	sentido = true;
+
+	
+
+
 	glfwPollEvents();
 	return continueApplication;
 }
@@ -259,21 +313,27 @@ void applicationLoop() {
 		glm::mat4 c1 = glm::translate(model, glm::vec3(0.0, -0.2, 0.0));
 		box3.render(glm::scale(c1, glm::vec3(1.0, 0.2, 0.5)));
 
-		//left arm
+		//left arm (Articulación) 
 		glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0, 0.0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
+		j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
+		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
 
-		//bone two
+		//bone brazo izquierdo 
 		glm::mat4 l1 = glm::translate(j1, glm::vec3(0.25, 0.0, 0.0));
 		l1 = glm::rotate(l1, glm::radians(90.0f), glm::vec3(0, 0, 0.1));
 		cylinder1.enableWireMode();
 		cylinder1.render(glm::scale(l1, glm::vec3(0.1, 0.5, 0.1)));
 
-		//second articulation
+
+		//Segunda Articulación Brazo igzqierdo
 		glm::mat4 j2 = glm::translate(j1, glm::vec3(0.5, 0.0, 0.0));
 		sphere1.enableWireMode();
-		sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1)));
+		sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1))); 
+		j2 = glm::rotate(j2, rot3, glm::vec3(0.0, 0.0, 1.0));
+		j2 = glm::rotate(j2, rot4, glm::vec3(1, 0, 0));
+		
 
 		//bone two
 		glm::mat4 l2 = glm::translate(j2, glm::vec3(0.15, 0.0, 0.0));
@@ -300,6 +360,10 @@ void applicationLoop() {
 		glm::mat4 j3 = glm::translate(model, glm::vec3(-0.5f, 0.0, 0.0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j3, glm::vec3(0.1, 0.1, 0.1)));
+	
+		
+		j3 = glm::rotate(j3, rot5, glm::vec3(0, 0, 1));
+		j3 = glm::rotate(j3, rot6, glm::vec3(0, 1, 0));
 
 		//bone three
 		glm::mat4 l3 = glm::translate(j3, glm::vec3(-0.25, 0.0, 0.0));
@@ -307,16 +371,15 @@ void applicationLoop() {
 		cylinder1.enableWireMode();
 		cylinder1.render(glm::scale(l3, glm::vec3(0.1, 0.5, 0.1)));
 
-		//second articulation
-		glm::mat4 j4 = glm::translate(j3, glm::vec3(-0.5, 0.0, 0.0));
+		//second articulation (brazo derecho)
+		glm::mat4 j4 = glm::translate(j3, glm::vec3(-0.25, 0.0, 0.0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j4, glm::vec3(0.1, 0.1, 0.1)));
+		j4 = glm::rotate(j4, rot7, glm::vec3(0, 0, 1));
+		j4 = glm::rotate(j4, rot8, glm::vec3(0, 1, 0));
 
-		//bone four
-		glm::mat4 l4 = glm::translate(j4, glm::vec3(-0.15, 0.0, 0.0));
-		l4 = glm::rotate(l4, glm::radians(90.0f), glm::vec3(0.0, 0.0, -1.1));
-		cylinder1.enableWireMode();
-		cylinder1.render(glm::scale(l4, glm::vec3(0.1, 0.25, 0.1)));
+
+		
 
 		//rigth leg
 		glm::mat4 j5 = glm::translate(model, glm::vec3(-0.25, -0.5, 0.0));
@@ -333,6 +396,7 @@ void applicationLoop() {
 		glm::mat4 j6 = glm::translate(j5, glm::vec3(0.0, -0.30, 0.0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j6, glm::vec3(0.1, 0.1, 0.1)));
+		
 
 		//bone six
 		glm::mat4 l6 = glm::translate(j5, glm::vec3(0.0, -0.4, 0.0));
