@@ -14,12 +14,12 @@ Cylinder::Cylinder(int slices, int stacks, float topRadius, float bottomRadius, 
 		float y = -0.5f * height + i * stackHeight;
 		float r = bottomRadius + i * radiusStep;
 		float dTheta = float(2.0f * M_PI) / slices;
-		float U = i / (float)stacks; 
+		float U = i / (float) stacks;
 		for (int j = 0; j <= slices; j++) {
-			float V = j / (float) slices ;
+			float V = j / (float) slices;
 			float c = cos(j * dTheta);
 			float s = sin(j * dTheta);
-			vertexArray[count++] = Vertex(glm::vec3(r * c, y, r * s), glm::vec2(U,V), glm::vec3(r * c, y, r * s));
+			vertexArray[count++] = Vertex(glm::vec3(r * c, y, r * s), glm::vec2(U, V), glm::vec3(r * c, y, r * s));
 		}
 	}
 
@@ -30,12 +30,11 @@ Cylinder::Cylinder(int slices, int stacks, float topRadius, float bottomRadius, 
 	for (int i = slices; i >= 0; i--) {
 		float x = topRadius * cos(i * dTheta);
 		float z = topRadius * sin(i * dTheta);
-		
-		float U = cos(i * dTheta) * 0.5 + 0.5; 
+		float U = cos(i * dTheta) * 0.5 + 0.5;
 		float V = sin(i * dTheta) * 0.5 + 0.5;
-		vertexArray[count++] = Vertex(glm::vec3(x, y, z), glm::vec2(U,V), glm::vec3(0, 1, 0));
+		vertexArray[count++] = Vertex(glm::vec3(x, y, z), glm::vec2(U, V), glm::vec3(0, 1, 0));
 	}
-	vertexArray[count++] = Vertex(glm::vec3(0, y, 0), glm::vec2(5.0, 0.5), glm::vec3(0, 1, 0));
+	vertexArray[count++] = Vertex(glm::vec3(0, y, 0), glm::vec2(0.5, 0.5), glm::vec3(0, 1, 0));
 	//bottom cap
 	y = -y;
 
@@ -44,9 +43,9 @@ Cylinder::Cylinder(int slices, int stacks, float topRadius, float bottomRadius, 
 		float z = bottomRadius * sin(i * dTheta);
 		float U = cos(i * dTheta) * 0.5 + 0.5;
 		float V = sin(i * dTheta) * 0.5 + 0.5;
-		vertexArray[count++] = Vertex(glm::vec3(x, y, z), glm::vec2(U,V), glm::vec3(0, -1, 0));
+		vertexArray[count++] = Vertex(glm::vec3(x, y, z), glm::vec2(U, V), glm::vec3(0, -1, 0));
 	}
-	vertexArray[count++] = Vertex(glm::vec3(0, y, 0), glm::vec2(0.5,0.5), glm::vec3(0, -1, 0));
+	vertexArray[count++] = Vertex(glm::vec3(0, y, 0), glm::vec2(0.5, 0.5), glm::vec3(0, -1, 0));
 
 	//fill indices array
 	int ringVertexCount = slices + 1;

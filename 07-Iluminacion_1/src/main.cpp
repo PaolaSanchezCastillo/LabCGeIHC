@@ -40,7 +40,6 @@ Shader shader;
 //Descomentar El shader de texturizado
 Shader shaderTexture;
 // Descomentar El shader para iluminacion
-
 Shader shaderColorLighting;
 
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
@@ -53,9 +52,9 @@ Cylinder cylinder1(20, 20, 0.5, 0.5);
 Cylinder cylinder2(20, 20, 0.5, 0.5);
 Box box1;
 Box box2;
-Box box3; 
+Box box3; //añadimos esto
 
-GLuint textureID1, textureID2, textureID3, textureID4, textureIDCubo;
+GLuint textureID1, textureID2, textureID3, textureID4;
 
 bool exitApp = false;
 int lastMousePosX, offsetX = 0;
@@ -163,7 +162,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cylinder1.setShader(&shaderColorLighting);
 	cylinder1.setColor(glm::vec4(0.3, 0.3, 1.0, 1.0));
 
-
 	cylinder2.init();
 	cylinder2.setShader(&shaderTexture);
 
@@ -178,9 +176,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	sphere3.init();
 	sphere3.setShader(&shaderTexture);
 
-	box3.init(); 
-	box3.setShader(&shaderTexture); 
-
+	box3.init();
+	box3.setShader(&shaderTexture);
 
 	camera->setPosition(glm::vec3(0.0, 0.0, 4.0));
 
@@ -279,11 +276,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		glGenerateMipmap(GL_TEXTURE_2D);
 	} else
 		std::cout << "Failed to load texture" << std::endl;
-
 	// Libera la memoria de la textura
 	texture3.freeImage(bitmap);
-//NUEVA TEXTURA DE LA 210 A 280 
-
 
 	// Definiendo la textura a utilizar
 	Texture texture4("../Textures/texturaLadrillos.jpg");
@@ -297,9 +291,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Enlazar esa textura a una tipo de textura de 2D.
 	glBindTexture(GL_TEXTURE_2D, textureID4);
 	// set the texture wrapping parameters
-	//eje x 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // set texture wrapping to GL_REPEAT (default wrapping method)
-	// eje y 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -456,10 +448,10 @@ void applicationLoop() {
 		// Descomentar
 		shaderColorLighting.setMatrix4("projection", 1, false, glm::value_ptr(projection));
 		shaderColorLighting.setMatrix4("view", 1, false, glm::value_ptr(view));
-		// shaderColorLighting.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
+		shaderColorLighting.setVectorFloat3("viewPos", glm::value_ptr(camera->getPosition()));
 		shaderColorLighting.setVectorFloat3("light.ambient", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
-		shaderColorLighting.setVectorFloat3("light.diffuse", glm::value_ptr(glm::vec3(0.6, 0.6, 0.6)));
-		//shaderColorLighting.setVectorFloat3("light.specular", glm::value_ptr(glm::vec3(0.9, 0.9, 0.9)));
+		shaderColorLighting.setVectorFloat3("light.diffuse", glm::value_ptr(glm::vec3(0.3, 0.3, 0.3)));
+		shaderColorLighting.setVectorFloat3("light.specular", glm::value_ptr(glm::vec3(0.9, 0.0, 0.0)));
 
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
 		lightModelmatrix = glm::translate(lightModelmatrix, glm::vec3(0.0f, 0.0f, -ratio));
@@ -546,7 +538,7 @@ void applicationLoop() {
 		cylinder2.render(cylinder2.getSlices() * cylinder2.getStacks() * 6,
 				cylinder2.getSlices() * 3, modelCylinder);
 		// Tapa inferior desde el indice : 20 * 20 * 6 + 20 * 3, el tamanio de indices es 20 * 3
-		// Se usa LADRILLOS
+		// Se usa la textura 3 ( Goku )
 		glBindTexture(GL_TEXTURE_2D, textureID3);
 		cylinder2.render(
 				cylinder2.getSlices() * cylinder2.getStacks() * 6
@@ -554,16 +546,12 @@ void applicationLoop() {
 				modelCylinder);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glm::mat4 cubeTextureModel = glm::mat4(1.0); 
+		glm::mat4 cubeTextureModel = glm::mat4(1.0);
 		cubeTextureModel = glm::translate(cubeTextureModel, glm::vec3(3.0, 2.0, 3.0));
 		glBindTexture(GL_TEXTURE_2D, textureID4);
-	//para repetir	2 horizontal, 2 vertical
-		shaderTexture.setVectorFloat2("scaleUV", glm::value_ptr(glm::vec2(2.0, 1.0))); 
-
-		box3.render(cubeTextureModel); 
-
+		shaderTexture.setVectorFloat2("scaleUV",glm::value_ptr(glm::vec2(2.0,1.0)));
+		box3.render(cubeTextureModel);
 		glBindTexture(GL_TEXTURE_2D, 0); 
-
 
 		if (angle > 2 * M_PI)
 			angle = 0.0;
@@ -573,7 +561,7 @@ void applicationLoop() {
 		shader.turnOff();
 
 		dz = 0;
-		rot0 = a0;
+		rot0 = 0;
 		offX += 0.001;
 
 		glfwSwapBuffers(window);
@@ -581,7 +569,6 @@ void applicationLoop() {
 }
 
 int main(int argc, char ** argv) {
-
 	init(800, 700, "Window GLFW", false);
 	applicationLoop();
 	destroy();

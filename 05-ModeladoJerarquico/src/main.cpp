@@ -40,15 +40,13 @@ Sphere sphere1(20, 20);
 Sphere sphere2(20, 20);
 Sphere sphere3(10, 10);
 Cylinder cylinder1(20, 20, 0.5, 0.5);
-
-Cylinder cylinder2(50, 50, 0.7, 0.7);
 Box box1;
 Box box2;
 Box box3;
 
 
-bool sentido = true;
-float rot1 = 0.0, rot2 = 0.0, rot3 = 0.0, rot4 = 0.0;
+bool sentidobob = true;
+float rot1bob = 0.0, rot2 = 0.0, rot3 = 0.0, rot4 = 0.0;
 float rot5 = 0.0, rot6 = 0.0, rot7 = 0.0, rot8 = 0.0;
 bool exitApp = false;
 int lastMousePosX, offSetX = 0;
@@ -141,10 +139,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cylinder1.init();
 	cylinder1.setShader(&shader);
 	cylinder1.setColor(glm::vec4(1.0, 1.0, 0.0, 1.0));
-
-	cylinder2.init();
-	cylinder1.setShader(&shader);
-	cylinder1.setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
 	box1.init();
 	box1.setShader(&shader);
@@ -239,50 +233,50 @@ bool processInput(bool continueApplication) {
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 
-		sentido = false;
+		sentidobob = false;
 
 
 	//Brazo derecho 
 
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && sentido)
-		rot1 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !sentido)
-		rot1 -= 0.001;
-	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && sentidobob)
+		rot1bob += 0.001;
+	else if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !sentidobob)
+		rot1bob -= 0.001;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && sentidobob)
 		rot2 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !sentidobob)
 		rot2 -= 0.001;
-	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && sentidobob)
 		rot3 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && !sentidobob)
 		rot3 -= 0.001;
-	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && sentidobob)
 		rot4 += 0.001;
 
-	sentido = false;
+	sentidobob = false;
 	//	Brazo izquierdo
 
 
-	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && sentidobob)
 		rot5 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS && !sentidobob)
 		rot5 -= 0.001;
-	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && sentidobob)
 		rot6 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS && !sentidobob)
 		rot6 -= 0.001;
 
-	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && sentidobob)
 		rot7 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS && !sentidobob)
 		rot7 -= 0.001;
 
-	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && sentido)
+	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && sentidobob)
 		rot8 += 0.001;
-	else if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !sentido)
+	else if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !sentidobob)
 		rot8 -= 0.001;
 
-	sentido = true;
+	sentidobob = true;
 
 
 
@@ -323,7 +317,7 @@ void applicationLoop() {
 		glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0, 0.0));
 		sphere1.enableWireMode();
 		sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
-		j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
+		j1 = glm::rotate(j1, rot1bob, glm::vec3(0, 0, 1));
 		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
 
 		//bone brazo izquierdo 
@@ -331,14 +325,6 @@ void applicationLoop() {
 		l1 = glm::rotate(l1, glm::radians(90.0f), glm::vec3(0, 0, 0.1));
 		cylinder1.enableWireMode();
 		cylinder1.render(glm::scale(l1, glm::vec3(0.1, 0.5, 0.1)));
-
-		//R2D2
-
-		glm::mat4 r2d2 = glm::translate(model, glm::vec3(0.9, 0.9, 0.9));
-		r2d2 = glm::rotate(r2d2, glm::radians(90.0f), glm::vec3(0, 0, 0.1));
-		cylinder2.enableWireMode();
-		cylinder2.render(glm::scale(r2d2, glm::vec3(0.1, 0.5, 0.1)));
-
 
 
 		//Segunda Articulación Brazo igzqierdo
