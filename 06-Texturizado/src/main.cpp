@@ -300,7 +300,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 
 	//definimos la textura 2 a utilizar
-	Texture texture2("../Textures/water.jpg");
+	Texture texture2("../Textures/envoltura.PNG");
 	//carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	bitmap = texture2.loadImage();
 	//convertimos el mapa de bits en una arreglo unidiemnsional de tipo unsigned
@@ -370,6 +370,78 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 
 	//TEXTURAS PARA LA COCA COLA
+
+
+	//definimos la textura 2 a utilizar
+	Texture texture5("../Textures/tapa-inferior.PNG");
+	//carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	bitmap = texture5.loadImage();
+	//convertimos el mapa de bits en una arreglo unidiemnsional de tipo unsigned
+	data = texture5.convertToData(bitmap, imageWidth,
+		imageHeight);
+	//creando la textura con id 1
+	glGenTextures(1, &textureID5);
+	//enlazar esa textura a un tipo de textura de 2d
+	glBindTexture(GL_TEXTURE_2D, textureID5);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//verifica si se pudo abrir la textura
+	if (data) {
+		//tranferir los dtos de la imagen a memoria
+		//pararametros; tipos de textura, niveles de bit maps, formato interno de opengl, ancho, alto, bitmap, 
+		//formato interno de la imagen, típo de dtao, apuntador  a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		//genera los niveles del mimap opengl es el encargado de realizarlo
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	//libera la memoria de la textura
+	texture5.freeImage(bitmap);
+
+
+
+	///SUPERIOR
+
+
+
+	//definimos la textura SUPERIOR a utilizar
+	Texture texture6("../Textures/tapa-superior.PNG");
+	//carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	bitmap = texture6.loadImage();
+	//convertimos el mapa de bits en una arreglo unidiemnsional de tipo unsigned
+	data = texture6.convertToData(bitmap, imageWidth,
+		imageHeight);
+	//creando la textura con id 1
+	glGenTextures(1, &textureID6);
+	//enlazar esa textura a un tipo de textura de 2d
+	glBindTexture(GL_TEXTURE_2D, textureID6);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//verifica si se pudo abrir la textura
+	if (data) {
+		//tranferir los dtos de la imagen a memoria
+		//pararametros; tipos de textura, niveles de bit maps, formato interno de opengl, ancho, alto, bitmap, 
+		//formato interno de la imagen, típo de dtao, apuntador  a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		//genera los niveles del mimap opengl es el encargado de realizarlo
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	//libera la memoria de la textura
+	texture6.freeImage(bitmap);
+
 
 
 
@@ -541,16 +613,16 @@ void applicationLoop() {
 		shaderTexture.setFloat("offsetX", 0);
 		
 		modelCylinder = glm::translate(modelCylinder, glm::vec3(-4.0, 0.0, 1.0)); //COCA-COLA
-		glBindTexture(GL_TEXTURE_2D, textureID4);
+		glBindTexture(GL_TEXTURE_2D, textureID2);
 		coca3.render(0, coca3.getSlices() * coca3.getStacks() * 6,
 			modelCylinder);
 
-		glBindTexture(GL_TEXTURE_2D, textureID5);	//TAPA SUPERIOR COCA COLA
+		glBindTexture(GL_TEXTURE_2D, textureID6);	//TAPA SUPERIOR COCA COLA
 		coca2.render(cylinder2.getSlices() * coca2.getStacks() * 6,
 			coca2.getSlices() * 3,
 			modelCylinder);
 
-		glBindTexture(GL_TEXTURE_2D, textureID6); //TAPA INFERIOR COCA COLA
+		glBindTexture(GL_TEXTURE_2D, textureID5); //TAPA INFERIOR COCA COLA
 		coca2.render(cylinder2.getSlices() * coca2.getStacks() * 6 + coca2.getSlices() * 3,
 			coca2.getSlices() * 3,
 			modelCylinder);
