@@ -47,7 +47,7 @@ Shader shaderColorLighting;
 Shader shaderTextureLighting;
 // Descomentar
 //Shader con materiales
-Shader shaderMaterialLighting;
+//Shader shaderMaterialLighting;
 // Descomentar
 //Shader con skybox
 //CREAMOS OTRO SHADER PARA EL CIELO
@@ -170,8 +170,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	shaderTextureLighting.initialize("../Shaders/iluminacion_texture_res.vs",
 			"../Shaders/iluminacion_texture_res.fs");
 	// Descomentar
-	shaderMaterialLighting.initialize("../Shaders/iluminacion_material.vs",
-	 "../Shaders/iluminacion_material.fs");
+	//shaderMaterialLighting.initialize("../Shaders/iluminacion_material.vs",
+	 //"../Shaders/iluminacion_material.fs");
 	// Descomentar
 	shaderSkybox.initialize("../Shaders/cubeTexture.vs",
 			"../Shaders/cubeTexture.fs");
