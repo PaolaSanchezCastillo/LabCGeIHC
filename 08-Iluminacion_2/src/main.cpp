@@ -50,7 +50,8 @@ Shader shaderTextureLighting;
 //Shader shaderMaterialLighting;
 // Descomentar
 //Shader con skybox
-//Shader shaderSkybox;
+//CREAMOS OTRO SHADER PARA EL CIELO
+Shader shaderSkybox;
 
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
@@ -58,8 +59,8 @@ Sphere sphere1(20, 20);
 Sphere sphere2(20, 20);
 Sphere sphere3(20, 20);
 Sphere sphereLamp(20, 20);
-// Descomentar
-// Sphere skyboxSphere(20, 20);
+// Descomentar  PARA REPRESENTAR EL SKYBOX
+Sphere skyboxSphere(20, 20);
 Cylinder cylinder1(20, 20, 0.5, 0.5);
 Cylinder cylinder2(20, 20, 0.5, 0.5);
 // Descomentar
@@ -169,16 +170,17 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	shaderTextureLighting.initialize("../Shaders/iluminacion_texture_res.vs",
 			"../Shaders/iluminacion_texture_res.fs");
 	// Descomentar
-	/*shaderMaterialLighting.initialize("../Shaders/iluminacion_material.vs",
-	 "../Shaders/iluminacion_material.fs");*/
+	//shaderMaterialLighting.initialize("../Shaders/iluminacion_material.vs",
+	 //"../Shaders/iluminacion_material.fs");
 	// Descomentar
-	/*shaderSkybox.initialize("../Shaders/cubeTexture.vs",
-			"../Shaders/cubeTexture.fs");*/
+	shaderSkybox.initialize("../Shaders/cubeTexture.vs",
+			"../Shaders/cubeTexture.fs");
 
 	// Inicializar los buffers VAO, VBO, EBO
 	sphere1.init();
 	// Método setter que colocar el apuntador al shader
-	sphere1.setShader(&shader);
+	sphere1.setShader(&shaderColorLighting);
+	sphere1.setShader(&shaderColorLighting);
 	//Setter para poner el color de la geometria
 	sphere1.setColor(glm::vec4(0.3, 0.3, 1.0, 1.0));
 
@@ -201,7 +203,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cylinder1.setColor(glm::vec4(0.3, 0.3, 1.0, 1.0));
 
 	cylinder2.init();
-	cylinder2.setShader(&shaderTexture);
+	cylinder2.setShader(&shaderTextureLighting);
 
 	// Descomentar
 	/*cylinderMaterials.init();
@@ -209,9 +211,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	 cylinderMaterials.setColor(glm::vec4(0.3, 0.3, 1.0, 1.0));*/
 
 	// Descomentar
-	/*skyboxSphere.init();
+	skyboxSphere.init();
 	skyboxSphere.setShader(&shaderSkybox);
-	skyboxSphere.setScale(glm::vec3(20.0f, 20.0f, 20.0f));*/
+	skyboxSphere.setScale(glm::vec3(20.0f, 20.0f, 20.0f));
 
 	box1.init();
 	// Settea el shader a utilizar
@@ -219,13 +221,13 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	box1.setColor(glm::vec4(1.0, 1.0, 0.0, 1.0));
 
 	box2.init();
-	box2.setShader(&shaderTexture);
+	box2.setShader(&shaderTextureLighting);
 
 	sphere3.init();
-	sphere3.setShader(&shaderTexture);
+	sphere3.setShader(&shaderTextureLighting);
 
 	box3.init();
-	box3.setShader(&shaderTexture);
+	box3.setShader(&shaderTextureLighting);
 
 	camera->setPosition(glm::vec3(0.0, 0.0, 4.0));
 
@@ -360,8 +362,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	texture4.freeImage(bitmap);
 
 	// Descomentar
-	// Carga de texturas para el skybox
-	/*Texture skyboxTexture = Texture("");
+	// Carga de texturas para el skybox TIPO DE TEXTURA  CUBE MAP 
+	Texture skyboxTexture = Texture("");
 	glGenTextures(1, &skyboxTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -381,7 +383,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		} else
 			std::cout << "Failed to load texture" << std::endl;
 		skyboxTexture.freeImage(bitmap);
-	}*/
+	}
 
 }
 
@@ -536,11 +538,11 @@ void applicationLoop() {
 		 glm::value_ptr(view));*/
 
 		// Settea la matriz de vista y projection al shader con skybox
-		// Descomentar
-		/*shaderSkybox.setMatrix4("projection", 1, false,
+		// Descomentar 
+		shaderSkybox.setMatrix4("projection", 1, false,
 				glm::value_ptr(projection));
 		shaderSkybox.setMatrix4("view", 1, false,
-				glm::value_ptr(view));*/
+				glm::value_ptr(glm::mat4(glm::mat3(view))));
 
 		// Propiedades de la luz para objetos con color
 		shaderColorLighting.setVectorFloat3("viewPos",
@@ -707,8 +709,9 @@ void applicationLoop() {
 
 		// Descomentar
 		// Se Dibuja el Skybox
-		/*GLint oldCullFaceMode;
+		GLint oldCullFaceMode;
 		GLint oldDepthFuncMode;
+		//SE DESHABILITA 
 		glGetIntegerv(GL_CULL_FACE_MODE, &oldCullFaceMode);
 		glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFuncMode);
 		shaderSkybox.setFloat("skybox", 0);
@@ -716,7 +719,7 @@ void applicationLoop() {
 		glDepthFunc(GL_LEQUAL);
 		skyboxSphere.render();
 		glCullFace(oldCullFaceMode);
-		glDepthFunc(oldDepthFuncMode);*/
+		glDepthFunc(oldDepthFuncMode);
 
 		dz = 0;
 		rot0 = 0;
