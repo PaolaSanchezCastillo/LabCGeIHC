@@ -95,7 +95,8 @@ vec3 calculateSpotLights(){
 		float intensity = clamp((theta - spotLights[i].outerCutOff) / epsilon, 0.0, 1.0);   
 		float distance = length(spotLights[i].position - fragPos);
 		float attenuation = 1.0f / (spotLights[i].constant + spotLights[i].linear * distance + spotLights[i].quadratic * distance * distance);
-		result +=  intensity * attenuation * calculateDirectionalLight(spotLights[i].light, spotLights[i].direction);
+		 result +=  intensity * attenuation * calculateDirectionalLight(spotLights[i].light, spotLights[i].direction);
+		//result += intensity * calculateDirectionalLight(spotLights[i].light, spotLights[i].direction);
 	}
 	return result;
 }
@@ -103,7 +104,7 @@ vec3 calculateSpotLights(){
 void main()
 {
 	vec4 colorText = texture(texture1, our_uv);
-	if(colorText.a < 0.1)
-		discard;
+	//if(colorText.a < 0.1)
+		//discard;
     color = vec4(calculateDirectionalLight(directionalLight.light, directionalLight.direction) + calculatePointLights() + calculateSpotLights(), 1.0);
 }
