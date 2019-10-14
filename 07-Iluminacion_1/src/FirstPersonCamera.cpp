@@ -1,4 +1,4 @@
-#include "Headers/FirstPersonCamera.h"
+	#include "Headers/FirstPersonCamera.h"
 
 FirstPersonCamera::FirstPersonCamera(glm::vec3 position, glm::vec3 worldUp,
 	glm::vec3 front, float yaw, float pitch, float speed, float sensitivity){

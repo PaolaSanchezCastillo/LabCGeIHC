@@ -70,14 +70,57 @@ Cylinder cylinderMaterials(20, 20, 0.5, 0.5);
 Box boxMaterials;
 Box box1;
 Box box2;
-Box box3;
+
+//CASA
+Box box3; // suelo
+Box pared1;  //Pared iazquierda habitacion
+Box pared2; //pared fondo habutacion 
+Box pared3; // pared DERECHA habitacion
+Box pared4; // pared frontal  habitacion
+Box pared5;// pared externa 
+Box pared6; // pared DERECHA EXTERNA
+
+//JARDIN CASA
+
+Box sueloJardin; 
+Box paredJardinExterna;
+
+
+//COCINA
+
+Box paredCocinaExterna;
+
+//SOFA
+
+Box sofa; 
+Box sofaRespando;
+Box sofaBrazoDerecho;
+Box sofaBrazoIzquierdo; 
+
+
+
+
+
+
+
 // Models complex instances
 Model modelRock;
 Model modelRailRoad;
 Model modelAircraft;
-Model modelCama; 
 
-GLuint textureID1, textureID2, textureID3, textureID4;
+//HABITACION
+
+Model modelCama; 
+Model modelBuro; 
+Model modelSofa; 
+
+//SALA
+
+Model modelTV;
+Model modelBuroSala;
+
+
+GLuint textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
 GLuint skyboxTextureID;
 
 GLenum types[6] = {
@@ -237,6 +280,38 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	box3.init();
 	box3.setShader(&shaderMulLighting);
 
+	sueloJardin.init();
+	sueloJardin.setShader(&shaderMulLighting);
+
+
+	pared1.init();
+	pared1.setShader(&shaderMulLighting);
+
+
+	pared2.init();
+	pared2.setShader(&shaderMulLighting);
+
+	pared3.init();
+	pared3.setShader(&shaderMulLighting);
+
+	pared4.init();
+	pared4.setShader(&shaderMulLighting); 
+	
+		
+	pared5.init();
+	pared5.setShader(&shaderMulLighting);
+
+
+	pared6.init();
+	pared6.setShader(&shaderMulLighting);
+
+	paredCocinaExterna.init(); 
+	paredCocinaExterna.setShader(&shaderMulLighting);
+
+	paredJardinExterna.init();
+	paredJardinExterna.setShader(&shaderMulLighting);
+
+
 	modelRock.loadModel("../models/rock/rock.obj");
 	modelRock.setShader(&shaderMulLighting);
 
@@ -245,9 +320,29 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	modelCama.loadModel("../models/cama/Snooze_OBJ.obj");
 	modelCama.setShader(&shaderMulLighting); 
+	
+
+	modelBuro.loadModel("../models/buro/Nightstand.obj");
+	modelBuro.setShader(&shaderMulLighting);
+
+
 
 	modelAircraft.loadModel("../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 	modelAircraft.setShader(&shaderMulLighting);
+
+
+	//SALA
+
+	modelTV.loadModel("../models/tv/OBJ/Samsung LED TV.obj");//9
+	//modelHelicopter.loadModel("../models/tv/cocacola/mpm_vol.09_p35.obj");//9
+	modelTV.setShader(&shaderMulLighting);//9
+
+	modelBuroSala.loadModel("../models/buro/Nightstand.obj");
+	modelBuroSala.setShader(&shaderMulLighting);
+
+
+
+	
 
 	camera->setPosition(glm::vec3(0.0, 0.0, 4.0));
 
@@ -288,7 +383,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	texture1.freeImage(bitmap);
 
 	// Definiendo la textura a utilizar
-	Texture texture2("../Textures/water.jpg");
+	Texture texture2("../Textures/madera-de-pino.jpg");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	bitmap = texture2.loadImage();
 	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
@@ -298,6 +393,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Enlazar esa textura a una tipo de textura de 2D.
 	glBindTexture(GL_TEXTURE_2D, textureID2);
 	// set the texture wrapping parameters
+
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
@@ -320,16 +417,16 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	texture2.freeImage(bitmap);
 
 	// Definiendo la textura a utilizar
-	Texture texture3("../Textures/goku.png");
+	Texture texture5("../Textures/cesped.jpg");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	// Voltear la imagen
-	bitmap = texture3.loadImage(true);
+	bitmap = texture5.loadImage(true);
 	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
-	data = texture3.convertToData(bitmap, imageWidth, imageHeight);
+	data = texture5.convertToData(bitmap, imageWidth, imageHeight);
 	// Creando la textura con id 1
-	glGenTextures(1, &textureID3);
+	glGenTextures(1, &textureID5);
 	// Enlazar esa textura a una tipo de textura de 2D.
-	glBindTexture(GL_TEXTURE_2D, textureID3);
+	glBindTexture(GL_TEXTURE_2D, textureID5);
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -350,7 +447,47 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	else
 		std::cout << "Failed to load texture" << std::endl;
 	// Libera la memoria de la textura
-	texture3.freeImage(bitmap);
+	texture5.freeImage(bitmap);
+
+	//textura de pared jardin
+
+
+	// Definiendo la textura a utilizar
+	Texture texture6("../Textures/piedra.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	bitmap = texture6.loadImage();
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture6.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID6);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID6);
+	// set the texture wrapping parameters
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture6.freeImage(bitmap);
+
+	//pared de marmol
+
 
 	// Definiendo la textura a utilizar
 	Texture texture4("../Textures/texturaLadrillos.jpg");
@@ -364,7 +501,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Enlazar esa textura a una tipo de textura de 2D.
 	glBindTexture(GL_TEXTURE_2D, textureID4);
 	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -637,149 +774,254 @@ void applicationLoop() {
 					* glm::vec4(0.0, 0.0, 0.0, 1.0))));
 
 		// Posicion luz para objetos con materiales
-		shaderMaterialLighting.setVectorFloat3("light.position",
+	/*	shaderMaterialLighting.setVectorFloat3("light.position",
 			glm::value_ptr(
 				glm::vec4(
 					lightModelmatrix
 					* glm::vec4(0.0, 0.0, 0.0, 1.0))));
-		sphereLamp.render(lightModelmatrix);
+		sphereLamp.render(lightModelmatrix);*/
 
-		model = glm::translate(model, glm::vec3(0, 0, dz));
-		model = glm::rotate(model, rot0, glm::vec3(0, 1, 0));
-		//box1.enableWireMode();
-		// Usamos la textura ID 1
-		glBindTexture(GL_TEXTURE_2D, textureID1);
-		box1.render(glm::scale(model, glm::vec3(1.0, 1.0, 0.1)));
-		// No utilizar ninguna textura
-		glBindTexture(GL_TEXTURE_2D, 0);
+		//model = glm::translate(model, glm::vec3(0, 0, dz));
+		//model = glm::rotate(model, rot0, glm::vec3(0, 1, 0));
+		////box1.enableWireMode();
+		//// Usamos la textura ID 1
+		//glBindTexture(GL_TEXTURE_2D, textureID1);
+		//box1.render(glm::scale(model, glm::vec3(1.0, 1.0, 0.1)));
+		//// No utilizar ninguna textura
+		//glBindTexture(GL_TEXTURE_2D, 0);
 
-		// Articulacion 1
-		glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
-		j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
-		j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
-		sphere1.enableWireMode();
-		sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
-
-		// Hueso 1
-		glm::mat4 l1 = glm::translate(j1, glm::vec3(0.25f, 0.0, 0.0));
-		l1 = glm::rotate(l1, glm::radians(90.0f), glm::vec3(0, 0, 1.0));
-		//cylinder1.enableWireMode();
-		cylinder1.render(glm::scale(l1, glm::vec3(0.1, 0.5, 0.1)));
-
-		// Articulacion 2
-		glm::mat4 j2 = glm::translate(j1, glm::vec3(0.5, 0.0f, 0.0f));
-		j2 = glm::rotate(j2, rot3, glm::vec3(0.0, 0.0, 1.0));
-		j2 = glm::rotate(j2, rot4, glm::vec3(1.0, 0.0, 0.0));
-		sphere1.enableWireMode();
-		sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1)));
-
-		// Hueso 2
-		glm::mat4 l2 = glm::translate(j2, glm::vec3(0.25, 0.0, 0.0));
-		l2 = glm::rotate(l2, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		//cylinder1.enableWireMode();
-		cylinder1.render(glm::scale(l2, glm::vec3(0.1, 0.5, 0.1)));
-
-		// Ojo
-		glm::mat4 ojo = glm::translate(model, glm::vec3(0.25, 0.25, 0.05));
+		//// Articulacion 1
+		//glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+		//j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
+		//j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
 		//sphere1.enableWireMode();
-		sphere1.render(glm::scale(ojo, glm::vec3(0.2, 0.2, 0.1)));
+		//sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
 
-		glm::mat4 ojo2 = glm::translate(model, glm::vec3(-0.25, 0.25, 0.05));
-		//sphere2.enableWireMode();
-		sphere2.render(glm::scale(ojo2, glm::vec3(0.2, 0.2, 0.1)));
+		//// Hueso 1
+		//glm::mat4 l1 = glm::translate(j1, glm::vec3(0.25f, 0.0, 0.0));
+		//l1 = glm::rotate(l1, glm::radians(90.0f), glm::vec3(0, 0, 1.0));
+		////cylinder1.enableWireMode();
+		//cylinder1.render(glm::scale(l1, glm::vec3(0.1, 0.5, 0.1)));
+
+		//// Articulacion 2
+		//glm::mat4 j2 = glm::translate(j1, glm::vec3(0.5, 0.0f, 0.0f));
+		//j2 = glm::rotate(j2, rot3, glm::vec3(0.0, 0.0, 1.0));
+		//j2 = glm::rotate(j2, rot4, glm::vec3(1.0, 0.0, 0.0));
+		//sphere1.enableWireMode();
+		//sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1)));
+
+		//// Hueso 2
+		//glm::mat4 l2 = glm::translate(j2, glm::vec3(0.25, 0.0, 0.0));
+		//l2 = glm::rotate(l2, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		////cylinder1.enableWireMode();
+		//cylinder1.render(glm::scale(l2, glm::vec3(0.1, 0.5, 0.1)));
+
+		//// Ojo
+		//glm::mat4 ojo = glm::translate(model, glm::vec3(0.25, 0.25, 0.05));
+		////sphere1.enableWireMode();
+		//sphere1.render(glm::scale(ojo, glm::vec3(0.2, 0.2, 0.1)));
+
+		//glm::mat4 ojo2 = glm::translate(model, glm::vec3(-0.25, 0.25, 0.05));
+		////sphere2.enableWireMode();
+		//sphere2.render(glm::scale(ojo2, glm::vec3(0.2, 0.2, 0.1)));
+
+		//SUELO DE LA CASA
 
 		glm::mat4 modelAgua = glm::mat4(1.0);
 		modelAgua = glm::translate(modelAgua, glm::vec3(0.0, -3.0, 0.0));
-		modelAgua = glm::scale(modelAgua, glm::vec3(5.0, 0.01, 5.0));
+		modelAgua = glm::scale(modelAgua, glm::vec3(30.0, 0.1, 11.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID2);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		shaderMulLighting.setFloat("offsetX", offX);
 		box2.render(modelAgua);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		shaderMulLighting.setFloat("offsetX", 0);
+		
 
-		glm::mat4 modelSphere = glm::mat4(1.0);
-		modelSphere = glm::translate(modelSphere, glm::vec3(3.0, 0.0, 0.0));
-		glBindTexture(GL_TEXTURE_2D, textureID3);
-		sphere3.render(modelSphere);
+
+		//JARDIN
+
+
+
+		glm::mat4 sueloJardinMatrix = glm::mat4(1.0);
+		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(0.0, -3.0, 8.0));
+		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(30.0, 0.1, 5.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID5);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		sueloJardin.render(sueloJardinMatrix);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
 
-		glm::mat4 modelCylinder = glm::mat4(1.0);
-		modelCylinder = glm::translate(modelCylinder,
-			glm::vec3(-3.0, 0.0, 0.0));
-		// Envolvente desde el indice 0, el tamanio es 20 * 20 * 6
-		// Se usa la textura 1 ( Bon sponja)
-		glBindTexture(GL_TEXTURE_2D, textureID1);
-		cylinder2.render(0, cylinder2.getSlices() * cylinder2.getStacks() * 6,
-			modelCylinder);
-		// Tapa Superior desde el indice : 20 * 20 * 6, el tamanio de indices es 20 * 3
-		// Se usa la textura 2 ( Agua )
-		glBindTexture(GL_TEXTURE_2D, textureID2);
-		cylinder2.render(cylinder2.getSlices() * cylinder2.getStacks() * 6,
-			cylinder2.getSlices() * 3, modelCylinder);
-		// Tapa inferior desde el indice : 20 * 20 * 6 + 20 * 3, el tamanio de indices es 20 * 3
-		// Se usa la textura 3 ( Goku )
-		glBindTexture(GL_TEXTURE_2D, textureID3);
-		cylinder2.render(
-			cylinder2.getSlices() * cylinder2.getStacks() * 6
-			+ cylinder2.getSlices() * 3, cylinder2.getSlices() * 3,
-			modelCylinder);
-		glBindTexture(GL_TEXTURE_2D, 0);
+	//	PRIMER PARED IZQUIERDA HABITACION
 
-		// Render del cubo con textura de ladrillos y con repeticion en x
-		glm::mat4 cubeTextureModel = glm::mat4(1.0);
-		cubeTextureModel = glm::translate(cubeTextureModel,
-			glm::vec3(3.0, 2.0, 3.0));
+		glm::mat4 modelPared1 = glm::mat4(1.0);
+		modelPared1 = glm::translate(modelPared1, glm::vec3(-2.5, -3.0, -3.0));
+		modelPared1 = glm::scale(modelPared1, glm::vec3(0.2, 4.0, 10.0));
+		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
-		shaderTexture.setVectorFloat2("scaleUV",
-			glm::value_ptr(glm::vec2(2.0, 1.0)));
-		box3.render(cubeTextureModel);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared1.render(modelPared1);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
 
-		// Render del cyindro con materiales
-		glm::mat4 cylinderMaterialModel = glm::mat4(1.0);
-		cylinderMaterialModel = glm::translate(cylinderMaterialModel, glm::vec3(3.0, 2.0, -3.0));
-		shaderMaterialLighting.setVectorFloat3("material.ambient", glm::value_ptr(glm::vec3(0.61424f, 0.04136f, 0.04136f)));
-		shaderMaterialLighting.setVectorFloat3("material.diffuse", glm::value_ptr(glm::vec3(0.61424f, 0.04136f, 0.04136f)));
-		shaderMaterialLighting.setVectorFloat3("material.specular", glm::value_ptr(glm::vec3(0.727811f, 0.626959f, 0.626959f)));
-		shaderMaterialLighting.setFloat("material.shininess", 76.8f);
-		cylinderMaterials.render(cylinderMaterialModel);
 
-		glm::mat4 boxMaterialModel = glm::mat4(1.0f);
-		boxMaterialModel = glm::translate(boxMaterialModel, glm::vec3(-3.0, 2.0, -3.0));
-		shaderMaterialLighting.setVectorFloat3("material.ambient", glm::value_ptr(glm::vec3(0.61424f, 0.04136f, 0.04136f)));
-		shaderMaterialLighting.setVectorFloat3("material.diffuse", glm::value_ptr(glm::vec3(0.61424f, 0.04136f, 0.04136f)));
-		shaderMaterialLighting.setVectorFloat3("material.specular", glm::value_ptr(glm::vec3(0.727811f, 0.626959f, 0.626959f)));
-		shaderMaterialLighting.setFloat("material.shininess", 76.8f);
-		boxMaterials.render(boxMaterialModel);
-		//Models complex render
-		glm::mat4 matrixModelRock = glm::mat4(1.0);
-		matrixModelRock = glm::translate(matrixModelRock, glm::vec3(-3.0, 0.0, 4.0));
-		//modelRock.render(matrixModelRock);
-		//Forze to enable the unit texture to 0 always-------------------------IMPORTANT
-		glActiveTexture(GL_TEXTURE0);
-		//Esto es para las vias del tren 
-		glm::mat4 matrixModelRailRoad = glm::mat4(1.0);
-		matrixModelRock = glm::translate(matrixModelRailRoad, glm::vec3(3.0, 0.0, 4.0));
-		//modelRailRoad.render(matrixModelRailRoad);
-		//Forze to enable the unit texture to 0 always-------------------------IMPORTANT
-		glActiveTexture(GL_TEXTURE0);
-		//Esto es para el modelo Aircraft
-		glm::mat4 matrixModelAircraft = glm::mat4(1.0);
-		matrixModelAircraft = glm::translate(matrixModelAircraft, glm::vec3(3.0, 0.0, 0.0));
-		//modelAircraft.render(matrixModelAircraft);
-		//Forze to enable the unit texture to 0 always-------------------------IMPORTANT
-		glActiveTexture(GL_TEXTURE0);
+		// PARED EXTERNA IZQUIERDA (habitacion) 
+		glm::mat4 modelPared3 = glm::mat4(1.0);
+		modelPared3 = glm::translate(modelPared3, glm::vec3(5.0, -3.0, -3.0));
+		modelPared3 = glm::scale(modelPared3, glm::vec3(0.2, 4.0, 10.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared1.render(modelPared3);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
 
+		//PARED EXTERNA DERECHA 
+		glm::mat4 modelPared6 = glm::mat4(1.0);
+		modelPared6 = glm::translate(modelPared6, glm::vec3(-9.8, -3.0, -3.0));
+		modelPared6 = glm::scale(modelPared6, glm::vec3(0.2, 4.0, 10.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared6.render(modelPared6);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		//PARED EXTERNA DERECHA COCINA 
+		glm::mat4 modelPared7 = glm::mat4(1.0);
+		modelPared7 = glm::translate(modelPared7, glm::vec3(13.8, -3.0, -3.0));
+		modelPared7 = glm::scale(modelPared7, glm::vec3(0.2, 4.0, 10.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		paredCocinaExterna.render(modelPared7);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+		//PARED DEL FONDO DE LA CASA
+
+		glm::mat4 modelPared2 = glm::mat4(1.0);
+		modelPared2 = glm::translate(modelPared2, glm::vec3(0.0, -3.0, -6.0));
+		modelPared2 = glm::scale(modelPared2, glm::vec3(30.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared2.render(modelPared2);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+		//PARED FRENTE HABITACION 
+
+		glm::mat4 modelPared4 = glm::mat4(1.0);
+		modelPared4 = glm::translate(modelPared4, glm::vec3(0.0, -3.0, 3.0));
+		modelPared4 = glm::scale(modelPared4, glm::vec3(30.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared4.render(modelPared4);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		//pared externa
+		glm::mat4 modelPared5 = glm::mat4(1.0);
+		modelPared5 = glm::translate(modelPared5, glm::vec3(0.0, -3.0, 5.0));
+		modelPared5 = glm::scale(modelPared5, glm::vec3(30.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		pared4.render(modelPared5);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	//	shaderMulLighting.setFloat("offsetX", 0);
+
+
+
+
+
+
+
+		//SALA
+
+		// ------------------------- JARDIN -------------------------- 
+
+		//pared externa JARDIN 
+		glm::mat4 modelJardinPared = glm::mat4(1.0);
+		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(0.0, -3.0, 10.0));
+		modelJardinPared = glm::scale(modelJardinPared, glm::vec3(40.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID6);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		shaderMulLighting.setFloat("offsetX", offX);
+		paredJardinExterna.render(modelJardinPared);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+
+		//---------------- HABITACION --------------------------------------------
 
 		//Models complex render
 		glm::mat4 matrixModelCama = glm::mat4(1.0);
-		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(3.0, 0.0, 10.0));
+		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -3.0, 0.0));
 		matrixModelCama = glm::scale(matrixModelCama, glm::vec3(0.001, 0.001, 0.001));
+		matrixModelCama = glm::rotate(matrixModelCama, 55.0f,glm::vec3(1.0, 0.0, 0.0));
 		modelCama.render(matrixModelCama);
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
 		glActiveTexture(GL_TEXTURE0);
+
+		////Models complex render SOFA
+		//glm::mat4 matrixModelSofa = glm::mat4(1.0);
+		//matrixModelSofa = glm::translate(matrixModelSofa, glm::vec3(-1.0, -3.0, -3.0));
+		////matrixModelSofa = glm::scale(matrixModelSofa, glm::vec3(0.001, 0.001, 0.001));
+		//shaderMulLighting.setFloat("offsetX", 0);
+		//modelSofa.render(matrixModelSofa);
+		////FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
+		//glActiveTexture(GL_TEXTURE0);
+
+
+		//MODEL BURO
+
+		glm::mat4 matBuro = glm::mat4(1.0);
+		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -3.0, -3.0));
+		//shaderMulLighting.setFloat("offsetX", 0);
+		modelBuro.render(matBuro);
+		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
+		glActiveTexture(GL_TEXTURE0);
+
+	// -------------------------- SALA ----------------------------------- 
+
+		//TELEVISION 
+
+		glm::mat4 matrixModelTV = glm::mat4(1.0);//9
+		matrixModelTV = glm::translate(matrixModelTV, glm::vec3(-5.0, -3.0, -3.0));//9
+		matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
+		matrixModelTV = glm::scale(matrixModelTV, glm::vec3(0.2, 0.2, 0.2));
+		//matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
+		modelTV.render(matrixModelTV);//9
+		//Forzar a habilitar a la unidad de textura 0-----------------IMPORTANTE
+		glActiveTexture(GL_TEXTURE0);
+
+
+		//MODEL BURO
+
+		glm::mat4 matBuroSala = glm::mat4(1.0);
+		matBuroSala = glm::translate(matBuroSala, glm::vec3(-7.0, -3.0, -3.0));
+		//shaderMulLighting.setFloat("offsetX", 0);
+		modelBuroSala.render(matBuroSala);
+		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
+		glActiveTexture(GL_TEXTURE0);
+
+
+
 		
 
 		if (angle > 2 * M_PI)
