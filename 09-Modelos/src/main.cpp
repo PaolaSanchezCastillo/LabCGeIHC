@@ -344,7 +344,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	
 
-	camera->setPosition(glm::vec3(0.0, 0.0, 4.0));
+	camera->setPosition(glm::vec3(0.0, 5.0, 4.0));
 
 	// Descomentar
 	// Definimos el tamanio de la imagen
@@ -773,67 +773,17 @@ void applicationLoop() {
 					lightModelmatrix
 					* glm::vec4(0.0, 0.0, 0.0, 1.0))));
 
-		// Posicion luz para objetos con materiales
-	/*	shaderMaterialLighting.setVectorFloat3("light.position",
-			glm::value_ptr(
-				glm::vec4(
-					lightModelmatrix
-					* glm::vec4(0.0, 0.0, 0.0, 1.0))));
-		sphereLamp.render(lightModelmatrix);*/
 
-		//model = glm::translate(model, glm::vec3(0, 0, dz));
-		//model = glm::rotate(model, rot0, glm::vec3(0, 1, 0));
-		////box1.enableWireMode();
-		//// Usamos la textura ID 1
-		//glBindTexture(GL_TEXTURE_2D, textureID1);
-		//box1.render(glm::scale(model, glm::vec3(1.0, 1.0, 0.1)));
-		//// No utilizar ninguna textura
-		//glBindTexture(GL_TEXTURE_2D, 0);
 
-		//// Articulacion 1
-		//glm::mat4 j1 = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
-		//j1 = glm::rotate(j1, rot1, glm::vec3(0, 0, 1));
-		//j1 = glm::rotate(j1, rot2, glm::vec3(0, 1, 0));
-		//sphere1.enableWireMode();
-		//sphere1.render(glm::scale(j1, glm::vec3(0.1, 0.1, 0.1)));
-
-		//// Hueso 1
-		//glm::mat4 l1 = glm::translate(j1, glm::vec3(0.25f, 0.0, 0.0));
-		//l1 = glm::rotate(l1, glm::radians(90.0f), glm::vec3(0, 0, 1.0));
-		////cylinder1.enableWireMode();
-		//cylinder1.render(glm::scale(l1, glm::vec3(0.1, 0.5, 0.1)));
-
-		//// Articulacion 2
-		//glm::mat4 j2 = glm::translate(j1, glm::vec3(0.5, 0.0f, 0.0f));
-		//j2 = glm::rotate(j2, rot3, glm::vec3(0.0, 0.0, 1.0));
-		//j2 = glm::rotate(j2, rot4, glm::vec3(1.0, 0.0, 0.0));
-		//sphere1.enableWireMode();
-		//sphere1.render(glm::scale(j2, glm::vec3(0.1, 0.1, 0.1)));
-
-		//// Hueso 2
-		//glm::mat4 l2 = glm::translate(j2, glm::vec3(0.25, 0.0, 0.0));
-		//l2 = glm::rotate(l2, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		////cylinder1.enableWireMode();
-		//cylinder1.render(glm::scale(l2, glm::vec3(0.1, 0.5, 0.1)));
-
-		//// Ojo
-		//glm::mat4 ojo = glm::translate(model, glm::vec3(0.25, 0.25, 0.05));
-		////sphere1.enableWireMode();
-		//sphere1.render(glm::scale(ojo, glm::vec3(0.2, 0.2, 0.1)));
-
-		//glm::mat4 ojo2 = glm::translate(model, glm::vec3(-0.25, 0.25, 0.05));
-		////sphere2.enableWireMode();
-		//sphere2.render(glm::scale(ojo2, glm::vec3(0.2, 0.2, 0.1)));
-
-		//SUELO DE LA CASA
+		// SUELO DE LA CASA
 
 		glm::mat4 modelAgua = glm::mat4(1.0);
-		modelAgua = glm::translate(modelAgua, glm::vec3(0.0, -3.0, 0.0));
-		modelAgua = glm::scale(modelAgua, glm::vec3(30.0, 0.1, 11.0));
+		modelAgua = glm::translate(modelAgua, glm::vec3(0.0, -2.0, 0.0));
+		modelAgua = glm::scale(modelAgua, glm::vec3(30.0, 0.1, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID2);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		box2.render(modelAgua);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
@@ -844,12 +794,12 @@ void applicationLoop() {
 
 
 		glm::mat4 sueloJardinMatrix = glm::mat4(1.0);
-		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(0.0, -3.0, 8.0));
-		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(30.0, 0.1, 5.0));
+		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(0.0, -2.0, 8.5));
+		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(20.0, 0.1, 5.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID5);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		sueloJardin.render(sueloJardinMatrix);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -857,12 +807,12 @@ void applicationLoop() {
 	//	PRIMER PARED IZQUIERDA HABITACION
 
 		glm::mat4 modelPared1 = glm::mat4(1.0);
-		modelPared1 = glm::translate(modelPared1, glm::vec3(-2.5, -3.0, -3.0));
+		modelPared1 = glm::translate(modelPared1, glm::vec3(-4.5, 0.0, 0.0));
 		modelPared1 = glm::scale(modelPared1, glm::vec3(0.2, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+	//	shaderMulLighting.setFloat("offsetX", offX);
 		pared1.render(modelPared1);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -870,24 +820,24 @@ void applicationLoop() {
 
 		// PARED EXTERNA IZQUIERDA (habitacion) 
 		glm::mat4 modelPared3 = glm::mat4(1.0);
-		modelPared3 = glm::translate(modelPared3, glm::vec3(5.0, -3.0, -3.0));
+		modelPared3 = glm::translate(modelPared3, glm::vec3(7.0, 0.0, 0.0));
 		modelPared3 = glm::scale(modelPared3, glm::vec3(0.2, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+	//	shaderMulLighting.setFloat("offsetX", offX);
 		pared1.render(modelPared3);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
 		//PARED EXTERNA DERECHA 
 		glm::mat4 modelPared6 = glm::mat4(1.0);
-		modelPared6 = glm::translate(modelPared6, glm::vec3(-9.8, -3.0, -3.0));
+		modelPared6 = glm::translate(modelPared6, glm::vec3(-15.0, 0.0, 0.0));
 		modelPared6 = glm::scale(modelPared6, glm::vec3(0.2, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		pared6.render(modelPared6);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -895,12 +845,12 @@ void applicationLoop() {
 
 		//PARED EXTERNA DERECHA COCINA 
 		glm::mat4 modelPared7 = glm::mat4(1.0);
-		modelPared7 = glm::translate(modelPared7, glm::vec3(13.8, -3.0, -3.0));
-		modelPared7 = glm::scale(modelPared7, glm::vec3(0.2, 4.0, 10.0));
+		modelPared7 = glm::translate(modelPared7, glm::vec3(0.0, 0.0, 0.0));
+		modelPared7 = glm::scale(modelPared7, glm::vec3(0.2, 4.0, 5.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		paredCocinaExterna.render(modelPared7);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -908,12 +858,12 @@ void applicationLoop() {
 		//PARED DEL FONDO DE LA CASA
 
 		glm::mat4 modelPared2 = glm::mat4(1.0);
-		modelPared2 = glm::translate(modelPared2, glm::vec3(0.0, -3.0, -6.0));
-		modelPared2 = glm::scale(modelPared2, glm::vec3(30.0, 4.0, 0.5));
+		modelPared2 = glm::translate(modelPared2, glm::vec3(-10.0, 0.0, -5.0));
+		modelPared2 = glm::scale(modelPared2, glm::vec3(10.0, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		pared2.render(modelPared2);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -921,12 +871,12 @@ void applicationLoop() {
 		//PARED FRENTE HABITACION 
 
 		glm::mat4 modelPared4 = glm::mat4(1.0);
-		modelPared4 = glm::translate(modelPared4, glm::vec3(0.0, -3.0, 3.0));
+		modelPared4 = glm::translate(modelPared4, glm::vec3(0.0, 0.0, 3.0));
 		modelPared4 = glm::scale(modelPared4, glm::vec3(30.0, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		pared4.render(modelPared4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
@@ -934,12 +884,12 @@ void applicationLoop() {
 
 		//pared externa
 		glm::mat4 modelPared5 = glm::mat4(1.0);
-		modelPared5 = glm::translate(modelPared5, glm::vec3(0.0, -3.0, 5.0));
+		modelPared5 = glm::translate(modelPared5, glm::vec3(0.0, 0.0, 5.0));
 		modelPared5 = glm::scale(modelPared5, glm::vec3(30.0, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+		//shaderMulLighting.setFloat("offsetX", offX);
 		pared4.render(modelPared5);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	//	shaderMulLighting.setFloat("offsetX", 0);
@@ -956,12 +906,12 @@ void applicationLoop() {
 
 		//pared externa JARDIN 
 		glm::mat4 modelJardinPared = glm::mat4(1.0);
-		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(0.0, -3.0, 10.0));
+		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(0.0, 0.0, 9.0));
 		modelJardinPared = glm::scale(modelJardinPared, glm::vec3(40.0, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID6);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
-		shaderMulLighting.setFloat("offsetX", offX);
+	//shaderMulLighting.setFloat("offsetX", offX);
 		paredJardinExterna.render(modelJardinPared);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//	shaderMulLighting.setFloat("offsetX", 0);
@@ -971,7 +921,7 @@ void applicationLoop() {
 
 		//Models complex render
 		glm::mat4 matrixModelCama = glm::mat4(1.0);
-		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -3.0, 0.0));
+		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -2.0, 0.0));
 		matrixModelCama = glm::scale(matrixModelCama, glm::vec3(0.001, 0.001, 0.001));
 		matrixModelCama = glm::rotate(matrixModelCama, 55.0f,glm::vec3(1.0, 0.0, 0.0));
 		modelCama.render(matrixModelCama);
@@ -991,7 +941,7 @@ void applicationLoop() {
 		//MODEL BURO
 
 		glm::mat4 matBuro = glm::mat4(1.0);
-		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -3.0, -3.0));
+		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -2.0, -3.0));
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuro.render(matBuro);
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
@@ -1002,7 +952,7 @@ void applicationLoop() {
 		//TELEVISION 
 
 		glm::mat4 matrixModelTV = glm::mat4(1.0);//9
-		matrixModelTV = glm::translate(matrixModelTV, glm::vec3(-5.0, -3.0, -3.0));//9
+		matrixModelTV = glm::translate(matrixModelTV, glm::vec3(-5.0,-2.0, -3.0));//9
 		matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
 		matrixModelTV = glm::scale(matrixModelTV, glm::vec3(0.2, 0.2, 0.2));
 		//matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
@@ -1014,7 +964,7 @@ void applicationLoop() {
 		//MODEL BURO
 
 		glm::mat4 matBuroSala = glm::mat4(1.0);
-		matBuroSala = glm::translate(matBuroSala, glm::vec3(-7.0, -3.0, -3.0));
+		matBuroSala = glm::translate(matBuroSala, glm::vec3(-7.0, -2.0, -3.0));
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuroSala.render(matBuroSala);
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
