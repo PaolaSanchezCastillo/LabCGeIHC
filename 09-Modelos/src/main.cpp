@@ -71,10 +71,36 @@ Box boxMaterials;
 Box box1;
 Box box2;
 
+//SOFA
+
+Box sofa;
+Box sofa2;
+Box sofa3; 
+Box sofa4; 
+Box sofa5; 
+
+// COMEDOR 
+
+// MESA
+Box mesa1; 
+Box mesa2; 
+
+//Sillas
+
+//
+
+
 //CASA
+
 Box box3; // suelo
+
+
 Box pared1;  //Pared iazquierda habitacion
 Box pared2; //pared fondo habutacion 
+Box paredFondo; 
+Box paredFondoCocina;
+Box Cocina;
+Box Superior; 
 Box pared3; // pared DERECHA habitacion
 Box pared4; // pared frontal  habitacion
 Box pared5;// pared externa 
@@ -84,18 +110,13 @@ Box pared6; // pared DERECHA EXTERNA
 
 Box sueloJardin; 
 Box paredJardinExterna;
+Box sueloAlberca;
 
 
 //COCINA
 
 Box paredCocinaExterna;
 
-//SOFA
-
-Box sofa; 
-Box sofaRespando;
-Box sofaBrazoDerecho;
-Box sofaBrazoIzquierdo; 
 
 
 
@@ -121,6 +142,7 @@ Model modelBuroSala;
 
 
 GLuint textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
+GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12; 
 GLuint skyboxTextureID;
 
 GLenum types[6] = {
@@ -283,6 +305,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	sueloJardin.init();
 	sueloJardin.setShader(&shaderMulLighting);
 
+	sueloAlberca.init();
+	sueloAlberca.setShader(&shaderMulLighting);
+
 
 	pared1.init();
 	pared1.setShader(&shaderMulLighting);
@@ -290,6 +315,22 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	pared2.init();
 	pared2.setShader(&shaderMulLighting);
+
+	paredFondo.init();
+	paredFondo.setShader(&shaderMulLighting);
+
+
+	paredFondoCocina.init();
+	paredFondoCocina.setShader(&shaderMulLighting);
+
+
+	Cocina.init();
+	Cocina.setShader(&shaderMulLighting);
+
+
+	Superior.init();
+	Superior.setShader(&shaderMulLighting);
+
 
 	pared3.init();
 	pared3.setShader(&shaderMulLighting);
@@ -310,6 +351,30 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	paredJardinExterna.init();
 	paredJardinExterna.setShader(&shaderMulLighting);
+
+	// sOFA
+
+	sofa.init();
+	sofa.setShader(&shaderMulLighting);
+
+	sofa2.init();
+	sofa2.setShader(&shaderMulLighting);
+
+	sofa3.init();
+	sofa3.setShader(&shaderMulLighting);
+
+
+	sofa4.init();
+	sofa4.setShader(&shaderMulLighting);
+
+	sofa5.init();
+	sofa5.setShader(&shaderMulLighting);
+
+	mesa1.init();
+	mesa1.setShader(&shaderMulLighting);
+
+	mesa2.init();
+	mesa2.setShader(&shaderMulLighting);
 
 
 	modelRock.loadModel("../models/rock/rock.obj");
@@ -350,7 +415,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Definimos el tamanio de la imagen
 	int imageWidth, imageHeight;
 	// Definiendo la textura a utilizar
-	Texture texture1("../Textures/sponge.jpg");
+	Texture texture1("../Textures/closet.jpg");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	FIBITMAP *bitmap = texture1.loadImage();
 	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
@@ -449,6 +514,41 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Libera la memoria de la textura
 	texture5.freeImage(bitmap);
 
+
+
+	// Definiendo la textura a utilizar
+	Texture texture3("../Textures/water2.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture3.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture3.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID3);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID3);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture3.freeImage(bitmap);
+
 	//textura de pared jardin
 
 
@@ -521,6 +621,223 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	// Libera la memoria de la textura
 	texture4.freeImage(bitmap);
+
+
+	//TEXTURA DE LA VENTANA
+
+
+		// Definiendo la textura a utilizar
+	Texture texture7("../Textures/venta.png");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture7.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture7.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID7);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID7);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture7.freeImage(bitmap);
+
+	//Cocina integral
+
+
+	//TEXTURA DE LA VENTANA
+
+
+		// Definiendo la textura a utilizar
+	Texture texture8("../Textures/cocina.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture8.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture8.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID8);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID8);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture8.freeImage(bitmap);
+
+	//mueble arriba
+
+	// Definiendo la textura a utilizar
+	Texture texture9("../Textures/MuebleSup.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture9.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture9.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID9);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID9);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture9.freeImage(bitmap);
+
+	// Refrigerador
+
+	// Definiendo la textura a utilizar
+	Texture texture10("../Textures/refri.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture10.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture10.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID10);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID10);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture10.freeImage(bitmap);
+
+	 // sofa textura
+
+
+	// Definiendo la textura a utilizar
+	Texture texture11("../Textures/lino.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture11.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture11.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID11);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID11);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture11.freeImage(bitmap);
+
+	// =============== MESA ============== 
+
+	// Definiendo la textura a utilizar
+	Texture texture12("../Textures/madera.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture12.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture12.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID12);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID12);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture12.freeImage(bitmap);
 
 	// Carga de texturas para el skybox
 	Texture skyboxTexture = Texture("");
@@ -778,8 +1095,8 @@ void applicationLoop() {
 		// SUELO DE LA CASA
 
 		glm::mat4 modelAgua = glm::mat4(1.0);
-		modelAgua = glm::translate(modelAgua, glm::vec3(0.0, -2.0, 0.0));
-		modelAgua = glm::scale(modelAgua, glm::vec3(30.0, 0.1, 10.0));
+		modelAgua = glm::translate(modelAgua, glm::vec3(3.0, -2.0, 0.0));
+		modelAgua = glm::scale(modelAgua, glm::vec3(36.0, 0.1, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID2);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -791,11 +1108,21 @@ void applicationLoop() {
 
 		//JARDIN
 
+		glm::mat4 sueloMatAlberca = glm::mat4(1.0);
+		sueloMatAlberca = glm::translate(sueloMatAlberca, glm::vec3(-7.0, -2.0, 7.5));
+		sueloMatAlberca = glm::scale(sueloMatAlberca, glm::vec3(10.0, 0.1, 6.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID3);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		sueloAlberca.render(sueloMatAlberca);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
 
 
 		glm::mat4 sueloJardinMatrix = glm::mat4(1.0);
-		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(0.0, -2.0, 8.5));
-		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(20.0, 0.1, 5.0));
+		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(8.0, -2.0, 8.5));
+		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(27.0, 0.1, 5.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID5);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -807,7 +1134,7 @@ void applicationLoop() {
 	//	PRIMER PARED IZQUIERDA HABITACION
 
 		glm::mat4 modelPared1 = glm::mat4(1.0);
-		modelPared1 = glm::translate(modelPared1, glm::vec3(-4.5, 0.0, 0.0));
+		modelPared1 = glm::translate(modelPared1, glm::vec3(-1.5, 0.0, 0.0));
 		modelPared1 = glm::scale(modelPared1, glm::vec3(0.2, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
@@ -820,7 +1147,7 @@ void applicationLoop() {
 
 		// PARED EXTERNA IZQUIERDA (habitacion) 
 		glm::mat4 modelPared3 = glm::mat4(1.0);
-		modelPared3 = glm::translate(modelPared3, glm::vec3(7.0, 0.0, 0.0));
+		modelPared3 = glm::translate(modelPared3, glm::vec3(9.0, 0.0, 0.0));
 		modelPared3 = glm::scale(modelPared3, glm::vec3(0.2, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
@@ -830,10 +1157,10 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
-		//PARED EXTERNA DERECHA 
+		//PARED EXTERNA izquierda 
 		glm::mat4 modelPared6 = glm::mat4(1.0);
 		modelPared6 = glm::translate(modelPared6, glm::vec3(-15.0, 0.0, 0.0));
-		modelPared6 = glm::scale(modelPared6, glm::vec3(0.2, 4.0, 10.0));
+		modelPared6 = glm::scale(modelPared6, glm::vec3(0.5, 4.0, 10.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -843,12 +1170,26 @@ void applicationLoop() {
 		//shaderMulLighting.setFloat("offsetX", 0);
 
 
-		//PARED EXTERNA DERECHA COCINA 
-		glm::mat4 modelPared7 = glm::mat4(1.0);
-		modelPared7 = glm::translate(modelPared7, glm::vec3(0.0, 0.0, 0.0));
-		modelPared7 = glm::scale(modelPared7, glm::vec3(0.2, 4.0, 5.0));
+		//PARED EXTERNA DERECHA cocina
+		glm::mat4 modelBox3 = glm::mat4(1.0);
+		modelBox3 = glm::translate(modelBox3, glm::vec3(20.6, 0.0, 0.0));
+		modelBox3 = glm::scale(modelBox3, glm::vec3(0.2, 4.0, 15.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		box3.render(modelBox3);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+		// este es el closet
+
+		//PARED EXTERNA DERECHA COCINA 
+		glm::mat4 modelPared7 = glm::mat4(1.0);
+		modelPared7 = glm::translate(modelPared7, glm::vec3(7.0, 0.0, 0.0));
+		modelPared7 = glm::scale(modelPared7, glm::vec3(0.7, 4.0, 3.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID1);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		//shaderMulLighting.setFloat("offsetX", offX);
 		paredCocinaExterna.render(modelPared7);
@@ -858,28 +1199,109 @@ void applicationLoop() {
 		//PARED DEL FONDO DE LA CASA
 
 		glm::mat4 modelPared2 = glm::mat4(1.0);
-		modelPared2 = glm::translate(modelPared2, glm::vec3(-10.0, 0.0, -5.0));
-		modelPared2 = glm::scale(modelPared2, glm::vec3(10.0, 4.0, 0.5));
+		modelPared2 = glm::translate(modelPared2, glm::vec3(3.7, 0.0, -5.0));
+
+		modelPared2 = glm::scale(modelPared2, glm::vec3(11.0, 4.0, 0.5));
 		// Se activa la textura del agua
-		glBindTexture(GL_TEXTURE_2D, textureID4);
+		glBindTexture(GL_TEXTURE_2D, textureID7);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		//shaderMulLighting.setFloat("offsetX", offX);
 		pared2.render(modelPared2);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
-		//PARED FRENTE HABITACION 
+		// PARED FONDO COCINA
 
-		glm::mat4 modelPared4 = glm::mat4(1.0);
-		modelPared4 = glm::translate(modelPared4, glm::vec3(0.0, 0.0, 3.0));
-		modelPared4 = glm::scale(modelPared4, glm::vec3(30.0, 4.0, 0.5));
+		glm::mat4 modelParedFondoCocina = glm::mat4(1.0);
+		modelParedFondoCocina = glm::translate(modelParedFondoCocina, glm::vec3(14.2, 0.0, -5.0));
+
+		modelParedFondoCocina = glm::scale(modelParedFondoCocina, glm::vec3(11.5, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		//shaderMulLighting.setFloat("offsetX", offX);
+		paredFondoCocina.render(modelParedFondoCocina);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		//cocina bajo
+
+
+		glm::mat4 modelAbajo = glm::mat4(1.0);
+		modelAbajo = glm::translate(modelAbajo, glm::vec3(14.2, -1.0, -4.0));
+		modelAbajo = glm::scale(modelAbajo, glm::vec3(10.0, 1.5, 1.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID8);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		Cocina.render(modelAbajo);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		glm::mat4 modelSuperior = glm::mat4(1.0);
+		modelSuperior = glm::translate(modelSuperior, glm::vec3(14.2, 1.5, -4.0));
+		modelSuperior = glm::scale(modelSuperior, glm::vec3(10.0, 1.5, 1.5));
+		
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID9);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		Superior.render(modelSuperior);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		// COCINA INTEGRAL
+
+		// PARED FONDO COCINA
+
+		glm::mat4 modelCocina = glm::mat4(1.0);
+		modelCocina = glm::translate(modelCocina, glm::vec3(14.2, 0.0, -5.0));
+
+		modelCocina = glm::scale(modelCocina, glm::vec3(10.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		Cocina.render(modelCocina);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		// FONDO HABITACION 
+
+
+		glm::mat4 modelParedFondo = glm::mat4(1.0);
+		modelParedFondo = glm::translate(modelParedFondo, glm::vec3(-8.5, 0.0, -5.0));
+
+		modelParedFondo = glm::scale(modelParedFondo, glm::vec3(13.0, 4.0, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID4);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		paredFondo.render(modelParedFondo);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+
+		//PARED FRENTE HABITACION (REFRIGERADOR)
+
+		glm::mat4 modelPared4 = glm::mat4(1.0);
+		modelPared4 = glm::translate(modelPared4, glm::vec3(15.0, -1.0, 3.4));
+		modelPared4 = glm::scale(modelPared4, glm::vec3(4.0, 7.0, 0.6));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID10);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);	
 		pared4.render(modelPared4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
+
+
+		
 
 
 		//pared externa
@@ -906,8 +1328,8 @@ void applicationLoop() {
 
 		//pared externa JARDIN 
 		glm::mat4 modelJardinPared = glm::mat4(1.0);
-		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(0.0, 0.0, 9.0));
-		modelJardinPared = glm::scale(modelJardinPared, glm::vec3(40.0, 4.0, 0.5));
+		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(3.7, 0.0, 9.0));
+		modelJardinPared = glm::scale(modelJardinPared, glm::vec3(36.0, 4.0, 0.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID6);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -921,8 +1343,8 @@ void applicationLoop() {
 
 		//Models complex render
 		glm::mat4 matrixModelCama = glm::mat4(1.0);
-		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -2.0, 0.0));
-		matrixModelCama = glm::scale(matrixModelCama, glm::vec3(0.001, 0.001, 0.001));
+		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -2.0, 2.0));
+		matrixModelCama = glm::scale(matrixModelCama, glm::vec3(0.002, 0.002, 0.002));
 		matrixModelCama = glm::rotate(matrixModelCama, 55.0f,glm::vec3(1.0, 0.0, 0.0));
 		modelCama.render(matrixModelCama);
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
@@ -933,7 +1355,7 @@ void applicationLoop() {
 		//matrixModelSofa = glm::translate(matrixModelSofa, glm::vec3(-1.0, -3.0, -3.0));
 		////matrixModelSofa = glm::scale(matrixModelSofa, glm::vec3(0.001, 0.001, 0.001));
 		//shaderMulLighting.setFloat("offsetX", 0);
-		//modelSofa.render(matrixModelSofa);
+		//modelSofa.render(matrixModelSofa)
 		////FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		//glActiveTexture(GL_TEXTURE0);
 
@@ -941,7 +1363,10 @@ void applicationLoop() {
 		//MODEL BURO
 
 		glm::mat4 matBuro = glm::mat4(1.0);
-		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -2.0, -3.0));
+		matBuro = glm::translate(matBuro, glm::vec3(-2.5, -2.0, -3.0));
+		matBuro = glm::scale(matBuro, glm::vec3(1.2, 1.2, 1.2));
+		
+
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuro.render(matBuro);
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
@@ -961,14 +1386,100 @@ void applicationLoop() {
 		glActiveTexture(GL_TEXTURE0);
 
 
+	 //// ------------------------- soFA --------------------------
+
+		//Fondo sofa
+		glm::mat4 modelSofa = glm::mat4(1.0);
+		modelSofa = glm::translate(modelSofa, glm::vec3(-5.0, -2.0, 2.5));
+		modelSofa = glm::scale(modelSofa, glm::vec3(4.8, 1.5, 2.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID11);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		sofa.render(modelSofa);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+			//Fondo sofa
+		glm::mat4 modelSofaSup = glm::mat4(1.0);
+		modelSofaSup = glm::translate(modelSofaSup, glm::vec3(-5.0, -1.0, 4.0));
+		modelSofaSup = glm::scale(modelSofaSup, glm::vec3(4.8, 0.5, 1.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID11);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		sofa2.render(modelSofaSup);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+		//Fondo sofa
+		glm::mat4 modelSofaOtro = glm::mat4(1.0);
+		modelSofaOtro = glm::translate(modelSofaOtro, glm::vec3(-4.0, -2.0, 2.0));
+		modelSofaOtro = glm::scale(modelSofaOtro, glm::vec3(1.7, 1.3, 6.3));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID11);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		sofa3.render(modelSofaOtro);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+	//BRAZO SOFA DERECHO
+		glm::mat4 modelSofaOtroDere = glm::mat4(1.0);
+		modelSofaOtroDere = glm::translate(modelSofaOtroDere, glm::vec3(-3.0, -1.0, 2.0));
+		modelSofaOtroDere = glm::scale(modelSofaOtroDere, glm::vec3(1.7, 0.3, 5.8));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID11);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		sofa4.render(modelSofaOtroDere);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+
+
+		// =========================== MESA ==============================0
+
+		glm::mat4 modelMesa = glm::mat4(1.0);
+		modelMesa = glm::translate(modelMesa, glm::vec3(-11, -1.0, 0.5));
+		modelMesa = glm::scale(modelMesa, glm::vec3(3.0, 0.3, 4.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID12);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		mesa1.render(modelMesa);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+		glm::mat4 modelMesaBajo = glm::mat4(1.0);
+		modelMesaBajo = glm::translate(modelMesaBajo, glm::vec3(-10.0, -2.0, 1.0));
+		modelMesaBajo = glm::scale(modelMesaBajo, glm::vec3(1.0, 1.7, 0.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID12);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+	//shaderMulLighting.setFloat("offsetX", offX);
+		mesa2.render(modelMesaBajo);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
+
+
+
+
+
+
 		//MODEL BURO
 
 		glm::mat4 matBuroSala = glm::mat4(1.0);
 		matBuroSala = glm::translate(matBuroSala, glm::vec3(-7.0, -2.0, -3.0));
+		matBuroSala = glm::scale(matBuroSala, glm::vec3(1.5, 1.5, 1.5));
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuroSala.render(matBuroSala);
+		
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		glActiveTexture(GL_TEXTURE0);
+
+
+
 
 
 
