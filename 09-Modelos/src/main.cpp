@@ -67,6 +67,9 @@ Sphere skyboxSphere(20, 20);
 Cylinder cylinder1(20, 20, 0.5, 0.5);
 Cylinder cylinder2(20, 20, 0.5, 0.5);
 Cylinder cylinderMaterials(20, 20, 0.5, 0.5);
+
+Box techo; 
+
 Box boxMaterials;
 Box box1;
 Box box2;
@@ -128,6 +131,8 @@ Box paredCocinaExterna;
 Model modelRock;
 Model modelRailRoad;
 Model modelAircraft;
+
+Model modelMesa; 
 
 //HABITACION
 
@@ -386,6 +391,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelCama.loadModel("../models/cama/Snooze_OBJ.obj");
 	modelCama.setShader(&shaderMulLighting); 
 	
+	modelMesa.loadModel("../models/Wood_Table/Wood_Table.obj");
+	modelMesa.setShader(&shaderMulLighting);
 
 	modelBuro.loadModel("../models/buro/Nightstand.obj");
 	modelBuro.setShader(&shaderMulLighting);
@@ -1351,6 +1358,24 @@ void applicationLoop() {
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
 		glActiveTexture(GL_TEXTURE0);
 
+
+		//=============== mesa cocina ===============
+
+
+		//Models complex render
+		glm::mat4 matrixModelMesa = glm::mat4(1.0);
+		matrixModelMesa = glm::translate(matrixModelMesa, glm::vec3(13.0, -1.2, 0.0));
+		matrixModelMesa  = glm::scale(matrixModelMesa, glm::vec3(3.5, 1.0, 3.5));
+
+		modelMesa.render(matrixModelMesa);
+
+
+	
+
+
+		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
+		glActiveTexture(GL_TEXTURE0);
+
 		////Models complex render SOFA
 		//glm::mat4 matrixModelSofa = glm::mat4(1.0);
 		//matrixModelSofa = glm::translate(matrixModelSofa, glm::vec3(-1.0, -3.0, -3.0));
@@ -1364,8 +1389,8 @@ void applicationLoop() {
 		//MODEL BURO
 
 		glm::mat4 matBuro = glm::mat4(1.0);
-		matBuro = glm::translate(matBuro, glm::vec3(-2.5, -2.0, -3.0));
-		matBuro = glm::scale(matBuro, glm::vec3(1.2, 1.2, 1.2));
+		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -2.0, -2.5));
+		matBuro = glm::scale(matBuro, glm::vec3(1.3, 1.3, 1.3));
 		
 
 		//shaderMulLighting.setFloat("offsetX", 0);
