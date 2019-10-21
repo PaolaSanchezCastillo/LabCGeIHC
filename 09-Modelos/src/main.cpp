@@ -1109,8 +1109,8 @@ void applicationLoop() {
 		//JARDIN
 
 		glm::mat4 sueloMatAlberca = glm::mat4(1.0);
-		sueloMatAlberca = glm::translate(sueloMatAlberca, glm::vec3(-7.0, -2.0, 7.5));
-		sueloMatAlberca = glm::scale(sueloMatAlberca, glm::vec3(10.0, 0.1, 6.0));
+		sueloMatAlberca = glm::translate(sueloMatAlberca, glm::vec3(-10.4, -2.0, 7.5));
+		sueloMatAlberca = glm::scale(sueloMatAlberca, glm::vec3(9.7, 0.1, 5.2));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID3);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1121,8 +1121,8 @@ void applicationLoop() {
 
 
 		glm::mat4 sueloJardinMatrix = glm::mat4(1.0);
-		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(8.0, -2.0, 8.5));
-		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(27.0, 0.1, 5.0));
+		sueloJardinMatrix = glm::translate(sueloJardinMatrix, glm::vec3(8.0, -2.0, 7.5));
+		sueloJardinMatrix = glm::scale(sueloJardinMatrix, glm::vec3(27.0, 0.1, 5.2));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID5);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1159,8 +1159,8 @@ void applicationLoop() {
 
 		//PARED EXTERNA izquierda 
 		glm::mat4 modelPared6 = glm::mat4(1.0);
-		modelPared6 = glm::translate(modelPared6, glm::vec3(-15.0, 0.0, 0.0));
-		modelPared6 = glm::scale(modelPared6, glm::vec3(0.5, 4.0, 10.0));
+		modelPared6 = glm::translate(modelPared6, glm::vec3(-15.0, 0.0, 2.2));
+		modelPared6 = glm::scale(modelPared6, glm::vec3(0.5, 4.0, 14.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1172,8 +1172,8 @@ void applicationLoop() {
 
 		//PARED EXTERNA DERECHA cocina
 		glm::mat4 modelBox3 = glm::mat4(1.0);
-		modelBox3 = glm::translate(modelBox3, glm::vec3(20.6, 0.0, 0.0));
-		modelBox3 = glm::scale(modelBox3, glm::vec3(0.2, 4.0, 15.0));
+		modelBox3 = glm::translate(modelBox3, glm::vec3(20.6, 0.0, 2.2));
+		modelBox3 = glm::scale(modelBox3, glm::vec3(0.2, 4.0, 14.5));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID4);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1199,7 +1199,8 @@ void applicationLoop() {
 		//PARED DEL FONDO DE LA CASA
 
 		glm::mat4 modelPared2 = glm::mat4(1.0);
-		modelPared2 = glm::translate(modelPared2, glm::vec3(3.7, 0.0, -5.0));
+
+		modelPared2 = glm::translate(modelPared2, glm::vec3(3.4, 0.0, -5.0));
 
 		modelPared2 = glm::scale(modelPared2, glm::vec3(11.0, 4.0, 0.5));
 		// Se activa la textura del agua
@@ -1290,8 +1291,8 @@ void applicationLoop() {
 		//PARED FRENTE HABITACION (REFRIGERADOR)
 
 		glm::mat4 modelPared4 = glm::mat4(1.0);
-		modelPared4 = glm::translate(modelPared4, glm::vec3(15.0, -1.0, 3.4));
-		modelPared4 = glm::scale(modelPared4, glm::vec3(4.0, 7.0, 0.6));
+		modelPared4 = glm::translate(modelPared4, glm::vec3(15.0, -1.0, 3.5));
+		modelPared4 = glm::scale(modelPared4, glm::vec3(4.0, 7.0, 1.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID10);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
