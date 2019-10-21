@@ -146,7 +146,7 @@ Model modelTV;
 Model modelBuroSala;
 
 
-GLuint textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
+GLuint textureID0, textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
 GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12; 
 GLuint skyboxTextureID;
 
@@ -402,6 +402,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelAircraft.loadModel("../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 	modelAircraft.setShader(&shaderMulLighting);
 
+	techo.init();
+	techo.setShader(&shaderMulLighting);
+
 
 	//SALA
 
@@ -421,7 +424,17 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Descomentar
 	// Definimos el tamanio de la imagen
 	int imageWidth, imageHeight;
+	
+
+
+
+	
+	
+	
 	// Definiendo la textura a utilizar
+
+
+
 	Texture texture1("../Textures/closet.jpg");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	FIBITMAP *bitmap = texture1.loadImage();
@@ -453,6 +466,43 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	// Libera la memoria de la textura
 	texture1.freeImage(bitmap);
+
+
+	///////////////N TECHO /////////////////
+
+	// Definiendo la textura a utilizar
+	Texture texture0("../Textures/tejas.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	bitmap = texture0.loadImage();
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture0.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID0);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID0);
+	// set the texture wrapping parameters
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture0.freeImage(bitmap);
 
 	// Definiendo la textura a utilizar
 	Texture texture2("../Textures/madera-de-pino.jpg");
@@ -1164,7 +1214,7 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
-		//PARED EXTERNA izquierda 
+		//PARED EXTERNA izquierda COMEDOR
 		glm::mat4 modelPared6 = glm::mat4(1.0);
 		modelPared6 = glm::translate(modelPared6, glm::vec3(-15.0, 0.0, 2.2));
 		modelPared6 = glm::scale(modelPared6, glm::vec3(0.5, 4.0, 14.5));
@@ -1175,6 +1225,19 @@ void applicationLoop() {
 		pared6.render(modelPared6);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
+
+		//==============TECHO==================
+		glm::mat4 modelTecho = glm::mat4(1.0);
+		modelTecho = glm::translate(modelTecho, glm::vec3(0.0, 2.7, 2.5));
+		modelTecho = glm::scale(modelTecho, glm::vec3(40, 1.0, 27.5));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID0);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		techo.render(modelTecho);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//shaderMulLighting.setFloat("offsetX", 0);
+
 
 
 		//PARED EXTERNA DERECHA cocina
