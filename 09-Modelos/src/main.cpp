@@ -95,6 +95,7 @@ Box mesa2;
 // pista
 
 Box pista; 
+Box helipuerto; 
 
 
 //CASA
@@ -143,6 +144,7 @@ Model modelMesa;
 Model modelCama; 
 Model modelBuro; 
 Model modelSofa; 
+Model autoEclipse; 
 
 //SALA
 
@@ -152,6 +154,7 @@ Model modelBuroSala;
 
 GLuint textureID0, textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
 GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12, textureID13; 
+GLuint textureID14;
 GLuint skyboxTextureID;
 
 GLenum types[6] = {
@@ -316,6 +319,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	pista.init();
 	pista.setShader(&shaderMulLighting);
 
+	helipuerto.init();
+	helipuerto.setShader(&shaderMulLighting);
+
 	sueloJardin.init();
 	sueloJardin.setShader(&shaderMulLighting);
 
@@ -397,8 +403,11 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelRock.loadModel("../models/railroad/railroad_track.obj");
 	modelRock.setShader(&shaderMulLighting);
 
-	modelCama.loadModel("../models/cama/Snooze_OBJ.obj");
+	modelCama.loadModel("../models/cama/2003eclipse.obj");
 	modelCama.setShader(&shaderMulLighting); 
+
+	autoEclipse.loadModel("../models/Eclipse/Snooze_OBJ.obj");
+	autoEclipse.setShader(&shaderMulLighting);
 	
 	modelMesa.loadModel("../models/Wood_Table/Wood_Table.obj");
 	modelMesa.setShader(&shaderMulLighting);
@@ -943,6 +952,44 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Libera la memoria de la textura
 	texture13.freeImage(bitmap);
 
+
+
+	// Helipuerto
+
+
+	// Definiendo la textura a utilizar
+	Texture texture14("../Textures/helipuerto.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture14.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture14.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID14);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID14);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture14.freeImage(bitmap);
+
 	// Carga de texturas para el skybox
 	Texture skyboxTexture = Texture("");
 	glGenTextures(1, &skyboxTextureID);
@@ -1176,6 +1223,93 @@ void applicationLoop() {
 
 
 
+		// =============   LUCES NAVIDEÑAS    =============
+
+
+		// Esto es para la luces pointlights
+		// Numero de luces a utilizar de tipo pointlights = 4
+		shaderMulLighting.setInt("pointLightCount", 4);
+	
+
+		//Posicion de la pared de fondo de la habitacion =======> 14.2, 0.0, -5.0
+
+
+
+		shaderMulLighting.setVectorFloat3("pointLights[0].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -3.5))));
+		//Propiedades de la luz verde
+		shaderMulLighting.setVectorFloat3("pointLights[0].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
+		shaderMulLighting.setVectorFloat3("pointLights[0].light.diffuse", glm::value_ptr(glm::vec3(0.0, 0.01, 0.0)));
+		shaderMulLighting.setVectorFloat3("pointLights[0].light.specular", glm::value_ptr(glm::vec3(0.0, 0.6, 0.0)));
+		shaderMulLighting.setFloat("pointLights[0].constant", 1.0);
+		shaderMulLighting.setFloat("pointLights[0].linear", 0.04);
+		shaderMulLighting.setFloat("pointLights[0].quadratic", 0.004);
+
+		
+
+		//Propiedades de la luz roja  -5.1, 4.8, -5.0
+		shaderMulLighting.setVectorFloat3("pointLights[1].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -5.0))));
+		shaderMulLighting.setVectorFloat3("pointLights[1].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
+		shaderMulLighting.setVectorFloat3("pointLights[1].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.0)));
+		shaderMulLighting.setVectorFloat3("pointLights[1].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.0)));
+		shaderMulLighting.setFloat("pointLights[1].constant", 1.0);
+		shaderMulLighting.setFloat("pointLights[1].linear", 0.04);
+		shaderMulLighting.setFloat("pointLights[1].quadratic", 0.004);
+
+		//Propiedades de la luz azul -5.1, 4.5, -6.5
+		shaderMulLighting.setVectorFloat3("pointLights[2].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -6.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[2].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
+		shaderMulLighting.setVectorFloat3("pointLights[2].light.diffuse", glm::value_ptr(glm::vec3(0.0, 0.0, 0.01)));
+		shaderMulLighting.setVectorFloat3("pointLights[2].light.specular", glm::value_ptr(glm::vec3(0.0, 0.0, 0.6)));
+		shaderMulLighting.setFloat("pointLights[2].constant", 1.0);
+		shaderMulLighting.setFloat("pointLights[2].linear", 0.04);
+		shaderMulLighting.setFloat("pointLights[2].quadratic", 0.004);
+
+
+		//Propiedades de la luz amarilla
+		shaderMulLighting.setVectorFloat3("pointLights[3].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -2.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[3].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
+		shaderMulLighting.setVectorFloat3("pointLights[3].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.01, 0.0)));
+		shaderMulLighting.setVectorFloat3("pointLights[3].light.specular", glm::value_ptr(glm::vec3(0.6, 0.6, 0.0)));
+		shaderMulLighting.setFloat("pointLights[3].constant", 1.0);
+		shaderMulLighting.setFloat("pointLights[3].linear", 0.04);
+		shaderMulLighting.setFloat("pointLights[3].quadratic", 0.004);
+		//Propiedades de la luz morada
+		shaderMulLighting.setVectorFloat3("pointLights[4].position", glm::value_ptr((glm::vec3(-14.9, 4.8, -6))));
+		shaderMulLighting.setVectorFloat3("pointLights[4].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
+		shaderMulLighting.setVectorFloat3("pointLights[4].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.01)));
+		shaderMulLighting.setVectorFloat3("pointLights[4].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.6)));
+		shaderMulLighting.setFloat("pointLights[4].constant", 1.0);
+		shaderMulLighting.setFloat("pointLights[4].linear", 0.04);
+		shaderMulLighting.setFloat("pointLights[4].quadratic", 0.004);
+
+		//Esto es para colocar las esferas de las luces (modelo, no las propiedades) 
+		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
+		sphereLamp.setPosition(glm::vec3(-5.1, 4.5, -3.5));
+		sphereLamp.setColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
+		sphereLamp.render();
+
+		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
+		sphereLamp.setPosition(glm::vec3(-5.1, 4.8, -5.0));
+		sphereLamp.setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
+		sphereLamp.render();
+
+		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
+		sphereLamp.setPosition(glm::vec3(-5.1, 4.5, -6.5));
+		sphereLamp.setColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
+		sphereLamp.render();
+
+		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
+		sphereLamp.setPosition(glm::vec3(-14.9, 4.8, -5));
+		sphereLamp.setColor(glm::vec4(0.8, 0.8, 0.0, 1.0));
+		sphereLamp.render();
+
+		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
+		sphereLamp.setPosition(glm::vec3(-14.9, 4.8, -6));
+		sphereLamp.setColor(glm::vec4(0.8, 0.0, 0.8, 1.0));
+		sphereLamp.render();
+
+
+
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle,
 			glm::vec3(1.0f, 0.0f, 0.0f));
 		lightModelmatrix = glm::translate(lightModelmatrix,
@@ -1205,13 +1339,38 @@ void applicationLoop() {
 
 		glm::mat4 modelPista = glm::mat4(1.0);
 		modelPista = glm::translate(modelPista, glm::vec3(3.0, -1.0, -40.0));
-		modelPista = glm::scale(modelPista, glm::vec3(100.0, 0.3, 10.0));
+		modelPista = glm::scale(modelPista, glm::vec3(100.0, 0.3, 15.0));
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID13);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		//shaderMulLighting.setFloat("offsetX", offX);
 		pista.render(modelPista);
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+	//	==============  HELIPUERTO ======== 
+
+
+		glm::mat4 modelHelipuerto = glm::mat4(1.0);
+		modelHelipuerto = glm::translate(modelHelipuerto, glm::vec3(3.0, -1.0, -70.0));
+		modelHelipuerto = glm::scale(modelHelipuerto, glm::vec3(20.0, 0.3, 20.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID14);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		helipuerto.render(modelHelipuerto);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// AUTO
+
+			//Models complex render
+		glm::mat4 matrixModelAuto = glm::mat4(1.0);
+		matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(3.0, 0.0, -40.0));
+		//autoEclipse.render(matrixModelAuto);
+		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
+		glActiveTexture(GL_TEXTURE0);
+
 
 
 
@@ -1332,7 +1491,7 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
-		//PARED DEL FONDO DE LA CASA
+		//PARED DEL FONDO DE LA CASA  solo es de la sala 
 
 		glm::mat4 modelPared2 = glm::mat4(1.0);
 
@@ -1347,7 +1506,7 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
-		// PARED FONDO COCINA
+		// PARED FONDO habitacion 
 
 		glm::mat4 modelParedFondoCocina = glm::mat4(1.0);
 		modelParedFondoCocina = glm::translate(modelParedFondoCocina, glm::vec3(14.2, 0.0, -5.0));
