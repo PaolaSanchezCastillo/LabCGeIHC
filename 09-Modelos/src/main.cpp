@@ -92,6 +92,10 @@ Box mesa2;
 
 //
 
+// pista
+
+Box pista; 
+
 
 //CASA
 
@@ -147,7 +151,7 @@ Model modelBuroSala;
 
 
 GLuint textureID0, textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
-GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12; 
+GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12, textureID13; 
 GLuint skyboxTextureID;
 
 GLenum types[6] = {
@@ -307,6 +311,11 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	box3.init();
 	box3.setShader(&shaderMulLighting);
 
+
+
+	pista.init();
+	pista.setShader(&shaderMulLighting);
+
 	sueloJardin.init();
 	sueloJardin.setShader(&shaderMulLighting);
 
@@ -419,7 +428,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	
 
-	camera->setPosition(glm::vec3(0.0, 5.0, 4.0));
+	camera->setPosition(glm::vec3(0.0, 10.0, 10.0));
 
 	// Descomentar
 	// Definimos el tamanio de la imagen
@@ -896,6 +905,44 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Libera la memoria de la textura
 	texture12.freeImage(bitmap);
 
+
+
+
+	// =============== PISTA ============== 
+
+	// Definiendo la textura a utilizar
+	Texture texture13("../Textures/pista.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture13.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture13.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID13);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID13);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture13.freeImage(bitmap);
+
 	// Carga de texturas para el skybox
 	Texture skyboxTexture = Texture("");
 	glGenTextures(1, &skyboxTextureID);
@@ -1151,6 +1198,24 @@ void applicationLoop() {
 
 		// SUELO DE LA CASA
 
+
+		//PISTA
+
+
+
+		glm::mat4 modelPista = glm::mat4(1.0);
+		modelPista = glm::translate(modelPista, glm::vec3(3.0, -1.0, -40.0));
+		modelPista = glm::scale(modelPista, glm::vec3(100.0, 0.3, 10.0));
+		// Se activa la textura del agua
+		glBindTexture(GL_TEXTURE_2D, textureID13);
+		//le cambiamos el shader con multiplesluces NO OLVIDAR
+		//shaderMulLighting.setFloat("offsetX", offX);
+		pista.render(modelPista);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+
 		glm::mat4 modelAgua = glm::mat4(1.0);
 		modelAgua = glm::translate(modelAgua, glm::vec3(3.0, -2.0, 0.0));
 		modelAgua = glm::scale(modelAgua, glm::vec3(36.0, 0.1, 10.0));
@@ -1185,6 +1250,7 @@ void applicationLoop() {
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
 		//shaderMulLighting.setFloat("offsetX", offX);
 		sueloJardin.render(sueloJardinMatrix);
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//shaderMulLighting.setFloat("offsetX", 0);
 
