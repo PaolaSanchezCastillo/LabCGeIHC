@@ -68,7 +68,7 @@ Cylinder cylinder1(20, 20, 0.5, 0.5);
 Cylinder cylinder2(20, 20, 0.5, 0.5);
 Cylinder cylinderMaterials(20, 20, 0.5, 0.5);
 
-Box techo; 
+Box techo;
 
 Box boxMaterials;
 Box box1;
@@ -78,15 +78,15 @@ Box box2;
 
 Box sofa;
 Box sofa2;
-Box sofa3; 
-Box sofa4; 
-Box sofa5; 
+Box sofa3;
+Box sofa4;
+Box sofa5;
 
 // COMEDOR 
 
 // MESA
-Box mesa1; 
-Box mesa2; 
+Box mesa1;
+Box mesa2;
 
 //Sillas
 
@@ -94,8 +94,8 @@ Box mesa2;
 
 // pista
 
-Box pista; 
-Box helipuerto; 
+Box pista;
+Box helipuerto;
 
 
 //CASA
@@ -105,10 +105,10 @@ Box box3; // suelo
 
 Box pared1;  //Pared iazquierda habitacion
 Box pared2; //pared fondo habutacion 
-Box paredFondo; 
+Box paredFondo;
 Box paredFondoCocina;
 Box Cocina;
-Box Superior; 
+Box Superior;
 Box pared3; // pared DERECHA habitacion
 Box pared4; // pared frontal  habitacion
 Box pared5;// pared externa 
@@ -116,7 +116,7 @@ Box pared6; // pared DERECHA EXTERNA
 
 //JARDIN CASA
 
-Box sueloJardin; 
+Box sueloJardin;
 Box paredJardinExterna;
 Box sueloAlberca;
 
@@ -137,14 +137,14 @@ Model modelRock;
 Model modelRailRoad;
 Model modelAircraft;
 
-Model modelMesa; 
+Model modelMesa;
 
 //HABITACION
 
-Model modelCama; 
-Model modelBuro; 
-Model modelSofa; 
-Model autoEclipse; 
+Model modelCama;
+Model modelBuro;
+Model modelSofa;
+Model autoEclipse;
 
 //SALA
 
@@ -153,7 +153,7 @@ Model modelBuroSala;
 
 
 GLuint textureID0, textureID1, textureID2, textureID3, textureID4, textureID5, textureID6;
-GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12, textureID13; 
+GLuint textureID7, textureID8, textureID9, textureID10, textureID11, textureID12, textureID13;
 GLuint textureID14;
 GLuint skyboxTextureID;
 
@@ -356,9 +356,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	pared3.setShader(&shaderMulLighting);
 
 	pared4.init();
-	pared4.setShader(&shaderMulLighting); 
-	
-		
+	pared4.setShader(&shaderMulLighting);
+
+
 	pared5.init();
 	pared5.setShader(&shaderMulLighting);
 
@@ -366,7 +366,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	pared6.init();
 	pared6.setShader(&shaderMulLighting);
 
-	paredCocinaExterna.init(); 
+	paredCocinaExterna.init();
 	paredCocinaExterna.setShader(&shaderMulLighting);
 
 	paredJardinExterna.init();
@@ -404,11 +404,11 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelRock.setShader(&shaderMulLighting);
 
 	modelCama.loadModel("../models/cama/2003eclipse.obj");
-	modelCama.setShader(&shaderMulLighting); 
+	modelCama.setShader(&shaderMulLighting);
 
 	autoEclipse.loadModel("../models/Eclipse/Snooze_OBJ.obj");
 	autoEclipse.setShader(&shaderMulLighting);
-	
+
 	modelMesa.loadModel("../models/Wood_Table/Wood_Table.obj");
 	modelMesa.setShader(&shaderMulLighting);
 
@@ -435,20 +435,20 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 
 
-	
+
 
 	camera->setPosition(glm::vec3(0.0, 10.0, 10.0));
 
 	// Descomentar
 	// Definimos el tamanio de la imagen
 	int imageWidth, imageHeight;
-	
 
 
 
-	
-	
-	
+
+
+
+
 	// Definiendo la textura a utilizar
 
 
@@ -843,10 +843,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Libera la memoria de la textura
 	texture10.freeImage(bitmap);
 
-	 // sofa textura
+	// sofa textura
 
 
-	// Definiendo la textura a utilizar
+   // Definiendo la textura a utilizar
 	Texture texture11("../Textures/lino.jpg");
 	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
 	// Voltear la imagen
@@ -1229,13 +1229,13 @@ void applicationLoop() {
 		// Esto es para la luces pointlights
 		// Numero de luces a utilizar de tipo pointlights = 4
 		shaderMulLighting.setInt("pointLightCount", 4);
-	
+
 
 		//Posicion de la pared de fondo de la habitacion =======> 14.2, 0.0, -5.0
 
 
 
-		shaderMulLighting.setVectorFloat3("pointLights[0].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -3.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[0].position", glm::value_ptr((glm::vec3(0.0, 1.5, -3.5))));
 		//Propiedades de la luz verde
 		shaderMulLighting.setVectorFloat3("pointLights[0].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[0].light.diffuse", glm::value_ptr(glm::vec3(0.0, 0.01, 0.0)));
@@ -1244,10 +1244,10 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[0].linear", 0.04);
 		shaderMulLighting.setFloat("pointLights[0].quadratic", 0.004);
 
-		
+
 
 		//Propiedades de la luz roja  -5.1, 4.8, -5.0
-		shaderMulLighting.setVectorFloat3("pointLights[1].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -5.0))));
+		shaderMulLighting.setVectorFloat3("pointLights[1].position", glm::value_ptr((glm::vec3(0.3, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.0)));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.0)));
@@ -1256,7 +1256,7 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[1].quadratic", 0.004);
 
 		//Propiedades de la luz azul -5.1, 4.5, -6.5
-		shaderMulLighting.setVectorFloat3("pointLights[2].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -6.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[2].position", glm::value_ptr((glm::vec3(0.9, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.diffuse", glm::value_ptr(glm::vec3(0.0, 0.0, 0.01)));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.specular", glm::value_ptr(glm::vec3(0.0, 0.0, 0.6)));
@@ -1266,7 +1266,7 @@ void applicationLoop() {
 
 
 		//Propiedades de la luz amarilla
-		shaderMulLighting.setVectorFloat3("pointLights[3].position", glm::value_ptr((glm::vec3(-5.1, 0.0, -2.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[3].position", glm::value_ptr((glm::vec3(1.2, 1.3, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.01, 0.0)));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.specular", glm::value_ptr(glm::vec3(0.6, 0.6, 0.0)));
@@ -1274,7 +1274,7 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[3].linear", 0.04);
 		shaderMulLighting.setFloat("pointLights[3].quadratic", 0.004);
 		//Propiedades de la luz morada
-		shaderMulLighting.setVectorFloat3("pointLights[4].position", glm::value_ptr((glm::vec3(-14.9, 4.8, -6))));
+		shaderMulLighting.setVectorFloat3("pointLights[4].position", glm::value_ptr((glm::vec3(1.5, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.01)));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.6)));
@@ -1283,28 +1283,28 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[4].quadratic", 0.004);
 
 		//Esto es para colocar las esferas de las luces (modelo, no las propiedades) 
-		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(-5.1, 4.5, -3.5));
+		sphereLamp.setScale(glm::vec3(0.1, 0.15, 0.2));
+		sphereLamp.setPosition(glm::vec3(0.0, 1.5, -3.5));
 		sphereLamp.setColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
 		sphereLamp.render();
 
 		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(-5.1, 4.8, -5.0));
+		sphereLamp.setPosition(glm::vec3(0.3, 1.3, -3.5));
 		sphereLamp.setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
 		sphereLamp.render();
 
 		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(-5.1, 4.5, -6.5));
+		sphereLamp.setPosition(glm::vec3(0.6, 1.5, -3.5));
 		sphereLamp.setColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
 		sphereLamp.render();
 
 		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(-14.9, 4.8, -5));
+		sphereLamp.setPosition(glm::vec3(0.9, 1.3, -3.5));
 		sphereLamp.setColor(glm::vec4(0.8, 0.8, 0.0, 1.0));
 		sphereLamp.render();
 
 		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(-14.9, 4.8, -6));
+		sphereLamp.setPosition(glm::vec3(1.2, 1.5, -3.5));
 		sphereLamp.setColor(glm::vec4(0.8, 0.0, 0.8, 1.0));
 		sphereLamp.render();
 
@@ -1349,7 +1349,7 @@ void applicationLoop() {
 
 
 
-	//	==============  HELIPUERTO ======== 
+		//	==============  HELIPUERTO ======== 
 
 
 		glm::mat4 modelHelipuerto = glm::mat4(1.0);
@@ -1384,7 +1384,7 @@ void applicationLoop() {
 		//shaderMulLighting.setFloat("offsetX", offX);
 		box2.render(modelAgua);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		
+
 
 
 		//JARDIN
@@ -1539,7 +1539,7 @@ void applicationLoop() {
 		glm::mat4 modelSuperior = glm::mat4(1.0);
 		modelSuperior = glm::translate(modelSuperior, glm::vec3(14.2, 1.5, -4.0));
 		modelSuperior = glm::scale(modelSuperior, glm::vec3(10.0, 1.5, 1.5));
-		
+
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID9);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1597,7 +1597,7 @@ void applicationLoop() {
 		//shaderMulLighting.setFloat("offsetX", 0);
 
 
-		
+
 
 
 		//pared externa
@@ -1610,7 +1610,7 @@ void applicationLoop() {
 		//shaderMulLighting.setFloat("offsetX", offX);
 		pared4.render(modelPared5);
 		glBindTexture(GL_TEXTURE_2D, 0);
-	//	shaderMulLighting.setFloat("offsetX", 0);
+		//	shaderMulLighting.setFloat("offsetX", 0);
 
 
 
@@ -1618,11 +1618,11 @@ void applicationLoop() {
 
 
 
-		//SALA
+			//SALA
 
-		// ------------------------- JARDIN -------------------------- 
+			// ------------------------- JARDIN -------------------------- 
 
-		//pared externa JARDIN 
+			//pared externa JARDIN 
 		glm::mat4 modelJardinPared = glm::mat4(1.0);
 		modelJardinPared = glm::translate(modelJardinPared, glm::vec3(3.7, 0.0, 9.0));
 		modelJardinPared = glm::scale(modelJardinPared, glm::vec3(36.0, 4.0, 0.5));
@@ -1641,7 +1641,7 @@ void applicationLoop() {
 		glm::mat4 matrixModelCama = glm::mat4(1.0);
 		matrixModelCama = glm::translate(matrixModelCama, glm::vec3(0.0, -2.0, 2.0));
 		matrixModelCama = glm::scale(matrixModelCama, glm::vec3(0.002, 0.002, 0.002));
-		matrixModelCama = glm::rotate(matrixModelCama, 55.0f,glm::vec3(1.0, 0.0, 0.0));
+		matrixModelCama = glm::rotate(matrixModelCama, 55.0f, glm::vec3(1.0, 0.0, 0.0));
 		modelCama.render(matrixModelCama);
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
 		glActiveTexture(GL_TEXTURE0);
@@ -1653,12 +1653,12 @@ void applicationLoop() {
 		//Models complex render
 		glm::mat4 matrixModelMesa = glm::mat4(1.0);
 		matrixModelMesa = glm::translate(matrixModelMesa, glm::vec3(13.0, -1.2, 0.0));
-		matrixModelMesa  = glm::scale(matrixModelMesa, glm::vec3(3.5, 1.0, 3.5));
+		matrixModelMesa = glm::scale(matrixModelMesa, glm::vec3(3.5, 1.0, 3.5));
 
 		modelMesa.render(matrixModelMesa);
 
 
-	
+
 
 
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
@@ -1679,19 +1679,19 @@ void applicationLoop() {
 		glm::mat4 matBuro = glm::mat4(1.0);
 		matBuro = glm::translate(matBuro, glm::vec3(-1.0, -2.0, -2.5));
 		matBuro = glm::scale(matBuro, glm::vec3(1.3, 1.3, 1.3));
-		
+
 
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuro.render(matBuro);
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		glActiveTexture(GL_TEXTURE0);
 
-	// -------------------------- SALA ----------------------------------- 
+		// -------------------------- SALA ----------------------------------- 
 
-		//TELEVISION 
+			//TELEVISION 
 
 		glm::mat4 matrixModelTV = glm::mat4(1.0);//9
-		matrixModelTV = glm::translate(matrixModelTV, glm::vec3(-5.0,-2.0, -3.0));//9
+		matrixModelTV = glm::translate(matrixModelTV, glm::vec3(-5.0, -2.0, -3.0));//9
 		matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
 		matrixModelTV = glm::scale(matrixModelTV, glm::vec3(0.2, 0.2, 0.2));
 		//matrixModelTV = glm::rotate(matrixModelTV, glm::radians(90.0f), glm::vec3(-1.0, 0.0, 0.0));
@@ -1700,9 +1700,9 @@ void applicationLoop() {
 		glActiveTexture(GL_TEXTURE0);
 
 
-	 //// ------------------------- soFA --------------------------
+		//// ------------------------- soFA --------------------------
 
-		//Fondo sofa
+		   //Fondo sofa
 		glm::mat4 modelSofa = glm::mat4(1.0);
 		modelSofa = glm::translate(modelSofa, glm::vec3(-5.0, -2.0, 2.5));
 		modelSofa = glm::scale(modelSofa, glm::vec3(4.8, 1.5, 2.5));
@@ -1788,7 +1788,7 @@ void applicationLoop() {
 		matBuroSala = glm::scale(matBuroSala, glm::vec3(1.5, 1.5, 1.5));
 		//shaderMulLighting.setFloat("offsetX", 0);
 		modelBuroSala.render(matBuroSala);
-		
+
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		glActiveTexture(GL_TEXTURE0);
 
@@ -1797,7 +1797,7 @@ void applicationLoop() {
 
 
 
-		
+
 
 		if (angle > 2 * M_PI)
 			angle = 0.0;
