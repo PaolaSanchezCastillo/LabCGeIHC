@@ -406,7 +406,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelCama.loadModel("../models/cama/2003eclipse.obj");
 	modelCama.setShader(&shaderMulLighting);
 
-	autoEclipse.loadModel("../models/Eclipse/Snooze_OBJ.obj");
+	autoEclipse.loadModel("../models/Eclipse/2003eclipse.obj");
 	autoEclipse.setShader(&shaderMulLighting);
 
 	modelMesa.loadModel("../models/Wood_Table/Wood_Table.obj");
@@ -1247,7 +1247,7 @@ void applicationLoop() {
 
 
 		//Propiedades de la luz roja  -5.1, 4.8, -5.0
-		shaderMulLighting.setVectorFloat3("pointLights[1].position", glm::value_ptr((glm::vec3(0.3, 1.5, -3.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[1].position", glm::value_ptr((glm::vec3(1.0, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.0)));
 		shaderMulLighting.setVectorFloat3("pointLights[1].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.0)));
@@ -1256,7 +1256,7 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[1].quadratic", 0.004);
 
 		//Propiedades de la luz azul -5.1, 4.5, -6.5
-		shaderMulLighting.setVectorFloat3("pointLights[2].position", glm::value_ptr((glm::vec3(0.9, 1.5, -3.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[2].position", glm::value_ptr((glm::vec3(2.0, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.diffuse", glm::value_ptr(glm::vec3(0.0, 0.0, 0.01)));
 		shaderMulLighting.setVectorFloat3("pointLights[2].light.specular", glm::value_ptr(glm::vec3(0.0, 0.0, 0.6)));
@@ -1266,7 +1266,7 @@ void applicationLoop() {
 
 
 		//Propiedades de la luz amarilla
-		shaderMulLighting.setVectorFloat3("pointLights[3].position", glm::value_ptr((glm::vec3(1.2, 1.3, -3.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[3].position", glm::value_ptr((glm::vec3(3.0, 1.3, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.01, 0.0)));
 		shaderMulLighting.setVectorFloat3("pointLights[3].light.specular", glm::value_ptr(glm::vec3(0.6, 0.6, 0.0)));
@@ -1274,7 +1274,7 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[3].linear", 0.04);
 		shaderMulLighting.setFloat("pointLights[3].quadratic", 0.004);
 		//Propiedades de la luz morada
-		shaderMulLighting.setVectorFloat3("pointLights[4].position", glm::value_ptr((glm::vec3(1.5, 1.5, -3.5))));
+		shaderMulLighting.setVectorFloat3("pointLights[4].position", glm::value_ptr((glm::vec3(4.0, 1.5, -3.5))));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.ambient", glm::value_ptr(glm::vec3(0.001, 0.001, 0.001)));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.diffuse", glm::value_ptr(glm::vec3(0.01, 0.0, 0.01)));
 		shaderMulLighting.setVectorFloat3("pointLights[4].light.specular", glm::value_ptr(glm::vec3(0.6, 0.0, 0.6)));
@@ -1283,29 +1283,29 @@ void applicationLoop() {
 		shaderMulLighting.setFloat("pointLights[4].quadratic", 0.004);
 
 		//Esto es para colocar las esferas de las luces (modelo, no las propiedades) 
-		sphereLamp.setScale(glm::vec3(0.1, 0.15, 0.2));
-		sphereLamp.setPosition(glm::vec3(0.0, 1.5, -3.5));
+		sphereLamp.setScale(glm::vec3(0.3, 0.3, 0.2));
+		sphereLamp.setPosition(glm::vec3(1.5, 1.5, -3.5));
 		sphereLamp.setColor(glm::vec4(0.0, 1.0, 0.0, 1.0));
 		sphereLamp.render();
 
-		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(0.3, 1.3, -3.5));
+		sphereLamp.setScale(glm::vec3(0.3, 0.3, 0.2));
+		sphereLamp.setPosition(glm::vec3(2.5, 1.3, -3.5));
 		sphereLamp.setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
 		sphereLamp.render();
 
-		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(0.6, 1.5, -3.5));
+		sphereLamp.setScale(glm::vec3(0.3, 0.3, 0.2));
+		sphereLamp.setPosition(glm::vec3(3.5, 1.5, -3.5));
 		sphereLamp.setColor(glm::vec4(0.0, 0.0, 1.0, 1.0));
 		sphereLamp.render();
 
-		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(0.9, 1.3, -3.5));
+		sphereLamp.setScale(glm::vec3(0.3, 0.3, 0.2));
+		sphereLamp.setPosition(glm::vec3(4.5, 1.3, -3.5));
 		sphereLamp.setColor(glm::vec4(0.8, 0.8, 0.0, 1.0));
 		sphereLamp.render();
 
-		sphereLamp.setScale(glm::vec3(0.1, 0.1, 0.2));
-		sphereLamp.setPosition(glm::vec3(1.2, 1.5, -3.5));
-		sphereLamp.setColor(glm::vec4(0.8, 0.0, 0.8, 1.0));
+		sphereLamp.setScale(glm::vec3(0.3, 0.3, 0.2));
+		sphereLamp.setPosition(glm::vec3(5.5, 1.5, -3.5));
+		sphereLamp.setColor(glm::vec4(3.2, 0.0, 0.8, 1.0));
 		sphereLamp.render();
 
 
@@ -1366,8 +1366,9 @@ void applicationLoop() {
 
 			//Models complex render
 		glm::mat4 matrixModelAuto = glm::mat4(1.0);
-		matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(3.0, 0.0, -40.0));
-		//autoEclipse.render(matrixModelAuto);
+		matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -40.0));
+		matrixModelAuto = glm::rotate(matrixModelAuto, 55.0f, glm::vec3(0.0, 1.0, 0.0));
+		autoEclipse.render(matrixModelAuto);
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
 		glActiveTexture(GL_TEXTURE0);
 
