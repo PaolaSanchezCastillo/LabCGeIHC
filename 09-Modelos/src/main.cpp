@@ -145,6 +145,7 @@ Model modelCama;
 Model modelBuro;
 Model modelSofa;
 Model autoEclipse;
+Model modelHelicoptero; 
 
 //SALA
 
@@ -403,8 +404,12 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelRock.loadModel("../models/railroad/railroad_track.obj");
 	modelRock.setShader(&shaderMulLighting);
 
-	modelCama.loadModel("../models/cama/2003eclipse.obj");
+	modelCama.loadModel("../models/cama/Snooze_OBJ.obj");
 	modelCama.setShader(&shaderMulLighting);
+
+
+	modelHelicoptero.loadModel("../models/Helicopter/Mi_24.obj");
+	modelHelicoptero.setShader(&shaderMulLighting);
 
 	autoEclipse.loadModel("../models/Eclipse/2003eclipse.obj");
 	autoEclipse.setShader(&shaderMulLighting);
@@ -1128,12 +1133,25 @@ bool processInput(bool continueApplication) {
 
 void applicationLoop() {
 	bool psi = true;
-
 	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0, 1.5, 0.0));
 	float offX = 0.0;
 	float angle = 0.0;
 	float ratio = 5.0;
+	int state = 0; //se agregan variables para el movimiento 
+	float offsetAutoAdvance = 0.0;
+	float offsetAutotRot = 0.0;
+
+	glm::mat4 matrixModelAuto = glm::mat4(1.0);
+	matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -40.0));
+	matrixModelAuto = glm::rotate(matrixModelAuto, 55.0f, glm::vec3(0.0, 1.0, 0.0));
+
+	
+	
+
 	while (psi) {
+
+
 		psi = processInput(true);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1362,13 +1380,19 @@ void applicationLoop() {
 		helipuerto.render(modelHelipuerto);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		glm::mat4 matrixModelHelicoptero = glm::mat4(1.0);
+		matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(3.0, 7.0, -70.0));
+		modelHelicoptero.render(matrixModelHelicoptero);
+
+
 		// AUTO
 
 			//Models complex render
 		glm::mat4 matrixModelAuto = glm::mat4(1.0);
 		matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -40.0));
 		matrixModelAuto = glm::rotate(matrixModelAuto, 55.0f, glm::vec3(0.0, 1.0, 0.0));
-		autoEclipse.render(matrixModelAuto);
+		
+
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
 		glActiveTexture(GL_TEXTURE0);
 
@@ -1793,11 +1817,7 @@ void applicationLoop() {
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		glActiveTexture(GL_TEXTURE0);
 
-
-
-
-
-
+		autoEclipse.render(matrixModelAuto);
 
 
 		if (angle > 2 * M_PI)
@@ -1821,6 +1841,23 @@ void applicationLoop() {
 		dz = 0;
 		rot0 = 0;
 		offX += 0.001;
+
+
+		switch (state) {
+		case 0:
+			std::cout << "Advance:" << std::endl;
+			// -0.01 debe ser igual en magnitud 
+			matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -0.01));
+			offsetAutoAdvance += -0.01;
+			if (offsetAutoAdvance < -2.0) {
+				offsetAutoAdvance = 0.0;
+				state = 1;
+			}
+
+			
+			break;
+		}
+
 
 		glfwSwapBuffers(window);
 	}
