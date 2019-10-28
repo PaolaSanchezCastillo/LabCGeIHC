@@ -1139,18 +1139,25 @@ void applicationLoop() {
 	float angle = 0.0;
 	float ratio = 5.0;
 	int state = 0; //se agregan variables para el movimiento 
+	int estadoHelicoptero = 0; 
+
+	//ESPECIFICACIONES DEL AUTO 
 	float offsetAutoAdvance = 0.0;
 	float offsetAutotRot = 0.0;
-
 	glm::mat4 matrixModelAuto = glm::mat4(1.0);
 	matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -40.0));
 	matrixModelAuto = glm::rotate(matrixModelAuto, 55.0f, glm::vec3(0.0, 1.0, 0.0));
 
+
+	//ESPECIFICACIONES DEL HELICOPTERO
 	
+	float offsetHelicoptero2AdvanceY = 0.0;
+	glm::mat4 matrixModelHelicoptero = glm::mat4(1.0);
+	matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(3.0, 7.0, -70.0));
 	
+
 
 	while (psi) {
-
 
 		psi = processInput(true);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1327,6 +1334,16 @@ void applicationLoop() {
 		sphereLamp.render();
 
 
+		//CARRO ECLIPSE BASICO
+		shaderMulLighting.setVectorFloat2("scaleUV", glm::value_ptr(glm::vec2(0.0, 0.0)));
+		autoEclipse.render(matrixModelAuto);
+		glActiveTexture(GL_TEXTURE0);
+
+		//helicoptero
+		modelHelicoptero.render(matrixModelHelicoptero); 
+		glActiveTexture(GL_TEXTURE0);
+
+
 
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle,
 			glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1373,6 +1390,8 @@ void applicationLoop() {
 		glm::mat4 modelHelipuerto = glm::mat4(1.0);
 		modelHelipuerto = glm::translate(modelHelipuerto, glm::vec3(3.0, -1.0, -70.0));
 		modelHelipuerto = glm::scale(modelHelipuerto, glm::vec3(20.0, 0.3, 20.0));
+
+
 		// Se activa la textura del agua
 		glBindTexture(GL_TEXTURE_2D, textureID14);
 		//le cambiamos el shader con multiplesluces NO OLVIDAR
@@ -1380,17 +1399,13 @@ void applicationLoop() {
 		helipuerto.render(modelHelipuerto);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glm::mat4 matrixModelHelicoptero = glm::mat4(1.0);
-		matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(3.0, 7.0, -70.0));
-		modelHelicoptero.render(matrixModelHelicoptero);
+		//glm::mat4 matrixModelHelicoptero = glm::mat4(1.0);
+		//matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(3.0, 7.0, -70.0));
+		//modelHelicoptero.render(matrixModelHelicoptero);
 
 
 		// AUTO
 
-			//Models complex render
-		glm::mat4 matrixModelAuto = glm::mat4(1.0);
-		matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -40.0));
-		matrixModelAuto = glm::rotate(matrixModelAuto, 55.0f, glm::vec3(0.0, 1.0, 0.0));
 		
 
 		//Forze to enable the unit texture to 0 always-------------------------modelCAMA
@@ -1817,7 +1832,7 @@ void applicationLoop() {
 		//FORCE TO ENABLE THE UNIT TEXTURE TO 0 ALWAYS .............. IMPORTANT
 		glActiveTexture(GL_TEXTURE0);
 
-		autoEclipse.render(matrixModelAuto);
+	
 
 
 		if (angle > 2 * M_PI)
@@ -1842,22 +1857,38 @@ void applicationLoop() {
 		rot0 = 0;
 		offX += 0.001;
 
+		//MAQUINA DE ESTADOS DEL AUTO 
 
 		switch (state) {
 		case 0:
 			std::cout << "Advance:" << std::endl;
 			// -0.01 debe ser igual en magnitud 
-			matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(40.0, 0.0, -0.01));
-			offsetAutoAdvance += -0.01;
-			if (offsetAutoAdvance < -2.0) {
+			matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(0.0, 0.0, 0.01));
+			offsetAutoAdvance += 0.01;
+			if (offsetAutoAdvance > 60.0) {
 				offsetAutoAdvance = 0.0;
 				state = 1;
 			}
+
+
 
 			
 			break;
 		}
 
+		 //MAQUINA DE ESTADOS HELICOPTERO
+
+		switch (estadoHelicoptero) {
+		case 0:
+			std::cout << "Advance Helicoptero:" << std::endl;
+			matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(0.0, -0.01, 0.0));
+			offsetHelicoptero2AdvanceY += 0.01;
+			if (offsetHelicoptero2AdvanceY > 15.0) {
+				offsetHelicoptero2AdvanceY = 0.0;
+				estadoHelicoptero = 1;
+			}
+			break;
+		}
 
 		glfwSwapBuffers(window);
 	}
