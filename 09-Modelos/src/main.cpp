@@ -1142,6 +1142,7 @@ void applicationLoop() {
 	int estadoHelicoptero = 0; 
 
 	//ESPECIFICACIONES DEL AUTO 
+
 	float offsetAutoAdvance = 0.0;
 	float offsetAutotRot = 0.0;
 	glm::mat4 matrixModelAuto = glm::mat4(1.0);
@@ -1866,6 +1867,7 @@ void applicationLoop() {
 			matrixModelAuto = glm::translate(matrixModelAuto, glm::vec3(0.0, 0.0, 0.01));
 			offsetAutoAdvance += 0.01;
 			if (offsetAutoAdvance > 60.0) {
+
 				offsetAutoAdvance = 0.0;
 				state = 1;
 			}
@@ -1883,7 +1885,7 @@ void applicationLoop() {
 			std::cout << "Advance Helicoptero:" << std::endl;
 			matrixModelHelicoptero = glm::translate(matrixModelHelicoptero, glm::vec3(0.0, -0.01, 0.0));
 			offsetHelicoptero2AdvanceY += 0.01;
-			if (offsetHelicoptero2AdvanceY > 15.0) {
+			if (offsetHelicoptero2AdvanceY > 08.0) {
 				offsetHelicoptero2AdvanceY = 0.0;
 				estadoHelicoptero = 1;
 			}

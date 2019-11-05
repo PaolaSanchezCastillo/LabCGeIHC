@@ -81,6 +81,16 @@ Model modelRailRoad;
 Model modelAircraft;
 Model modelEclipseChasis;
 
+//Se añade el helicoptero y el lamborgini
+
+Model modelHeliChasis;
+Model modelHeliHeli;
+Model modelLambo;
+Model modelLamboLeftDor;
+Model modelLamboLlantasDel; 
+Model modelLamboLlantasTras; 
+
+
 GLuint textureID1, textureID2, textureID3, textureID4, textureID5;
 GLuint skyboxTextureID;
 
@@ -261,6 +271,24 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Eclipse
 	modelEclipseChasis.loadModel("../models/Eclipse/2003eclipse.obj");
 	modelEclipseChasis.setShader(&shaderMulLighting);
+
+
+	// Helicopter
+	modelHeliChasis.loadModel("../models/Helicopter/Mi_24_chasis.obj");
+	modelHeliChasis.setShader(&shaderMulLighting);
+	modelHeliHeli.loadModel("../models/Helicopter/Mi_24_heli.obj");
+	modelHeliHeli.setShader(&shaderMulLighting);
+	// Lamborginhi
+	modelLambo.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_chasis.obj");
+	modelLambo.setShader(&shaderMulLighting);
+	modelLamboLeftDor.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_left_dor.obj");
+	modelLamboLeftDor.setShader(&shaderMulLighting);
+	modelLamboLlantasDel.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_Llantas_Del.obj");
+	modelLamboLlantasDel.setShader(&shaderMulLighting);
+	modelLamboLlantasTras.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_Llantas_Trasl.obj");
+	modelLamboLlantasTras.setShader(&shaderMulLighting);
+
+
 
 	camera->setPosition(glm::vec3(0.0, 3.0, 4.0));
 
@@ -579,6 +607,18 @@ bool processInput(bool continueApplication) {
 
 void applicationLoop() {
 	bool psi = true;
+
+	float estadoHelicoptero = 0.0; 
+	//Se añade la matriz
+
+	glm::mat4 modelMatrixHeli = glm::mat4(1.0f);
+	modelMatrixHeli = glm::translate(modelMatrixHeli, glm::vec3(-10, 10, -4.0));
+	float rotHelHelY = 0.0;
+
+	int stateDoor = 0;
+	float dorRotCount = 0.0;
+
+
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0, 1.5, 0.0));
@@ -951,6 +991,42 @@ void applicationLoop() {
 		modelMatrixEclipseChasis = glm::scale(modelMatrixEclipse, glm::vec3(0.5, 0.5, 0.5));
 		modelEclipseChasis.render(modelMatrixEclipseChasis);
 		glActiveTexture(GL_TEXTURE0);
+
+
+		// Helicopter
+		glm::mat4 modelMatrixHeliChasis = glm::mat4(modelMatrixHeli);
+		modelHeliChasis.render(modelMatrixHeliChasis);
+		glActiveTexture(GL_TEXTURE0);
+
+		glm::mat4 modelMatrixHeliHeli = glm::mat4(modelMatrixHeliChasis);
+		modelMatrixHeliHeli = glm::translate(modelMatrixHeliHeli, glm::vec3(0.0, 0.0, -0.249548));
+		modelMatrixHeliHeli = glm::rotate(modelMatrixHeliHeli, rotHelHelY, glm::vec3(0, 1, 0));
+		modelMatrixHeliHeli = glm::translate(modelMatrixHeliHeli, glm::vec3(0.0, 0.0, 0.249548));
+		modelHeliHeli.render(modelMatrixHeliHeli);
+		glActiveTexture(GL_TEXTURE0);
+
+		// Lambo car
+		glm::mat4 modelMatrixLambo = glm::mat4(1.0);
+		modelMatrixLambo = glm::translate(modelMatrixLambo, glm::vec3(0.0, 0.0, -10.0));
+		modelMatrixLambo = glm::scale(modelMatrixLambo, glm::vec3(2.0, 2.0, 2.0));
+		modelLambo.render(modelMatrixLambo);
+		glActiveTexture(GL_TEXTURE0);
+		glm::mat4 modelMatrixLamboLeftDor = glm::mat4(modelMatrixLambo);
+		modelMatrixLamboLeftDor = glm::translate(modelMatrixLamboLeftDor, glm::vec3(1.08676, 0.707316, 0.982601));
+		modelMatrixLamboLeftDor = glm::rotate(modelMatrixLamboLeftDor, glm::radians(dorRotCount), glm::vec3(1.0, 0, 0));
+		modelMatrixLamboLeftDor = glm::translate(modelMatrixLamboLeftDor, glm::vec3(-1.08676, -0.707316, -0.982601));
+		modelLamboLeftDor.render(modelMatrixLamboLeftDor);
+		glActiveTexture(GL_TEXTURE0);
+		//Llantas Del
+		glm::mat4 modelMatrixLamboLeftDor = glm::mat4(modelMatrixLambo);
+		modelMatrixLamboLeftDor = glm::translate(modelMatrixLamboLeftDor, glm::vec3(1.08676, 0.707316, 0.982601));
+		modelMatrixLamboLeftDor = glm::rotate(modelMatrixLamboLeftDor, glm::radians(dorRotCount), glm::vec3(1.0, 0, 0));
+		modelMatrixLamboLeftDor = glm::translate(modelMatrixLamboLeftDor, glm::vec3(-1.08676, -0.707316, -0.982601));
+		modelLamboLeftDor.render(modelMatrixLamboLeftDor);
+		glActiveTexture(GL_TEXTURE0);
+
+
+
 
 		/*******************************************
 		 * Skybox

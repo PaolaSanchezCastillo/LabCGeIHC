@@ -75,6 +75,10 @@ Box box2;
 Box box3;
 Box boxCesped;
 Box boxWall;
+
+
+Box pista;
+
 // Models complex instances
 Model modelRock;
 Model modelRailRoad;
@@ -84,8 +88,12 @@ Model modelEclipseRearWheels;
 Model modelEclipseFrontalWheels;
 Model modelHeliChasis;
 Model modelHeliHeli;
+Model modelHeliTras; 
 Model modelLambo;
 Model modelLamboLeftDor;
+Model modelLamboLlantasDel;
+Model modelLamboLlantasTras;
+
 // Dart lego
 Model modelDartLegoBody;
 Model modelDartLegoHead;
@@ -97,7 +105,7 @@ Model modelDartLegoRightHand;
 Model modelDartLegoLeftLeg;
 Model modelDartLegoRightLeg;
 
-GLuint textureID1, textureID2, textureID3, textureID4, textureID5;
+GLuint textureID1, textureID2, textureID3, textureID4, textureID5, textureID13;
 GLuint skyboxTextureID;
 
 GLenum types[6] = {
@@ -119,7 +127,7 @@ bool exitApp = false;
 int lastMousePosX, offsetX = 0;
 int lastMousePosY, offsetY = 0;
 
-float rot0 = 0.0, dz = 0.0;
+float rot0 = 0.0, dz = 0.0, dz2 = 0.0 ; 
 
 float rot1 = 0.0, rot2 = 0.0, rot3 = 0.0, rot4 = 0.0;
 // Descomentar
@@ -150,6 +158,8 @@ int indexFrameDartNext = 1;
 float interpolationDart = 0.0;
 int maxNumPasosDart = 200;
 int numPasosDart = 0;
+
+
 
 double deltaTime;
 double currTime, lastTime;
@@ -285,6 +295,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	box3.init();
 	box3.setShader(&shaderMulLighting);
 
+
+	pista.init();
+	pista.setShader(&shaderMulLighting);
+
 	boxCesped.init();
 	boxCesped.setShader(&shaderMulLighting);
 
@@ -312,11 +326,18 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelHeliChasis.setShader(&shaderMulLighting);
 	modelHeliHeli.loadModel("../models/Helicopter/Mi_24_heli.obj");
 	modelHeliHeli.setShader(&shaderMulLighting);
+	modelHeliTras.loadModel("../models/Helicopter/Mi_24_HeliBack.obj");
+	modelHeliTras.setShader(&shaderMulLighting);
 	// Lamborginhi
 	modelLambo.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_chasis.obj");
 	modelLambo.setShader(&shaderMulLighting);
 	modelLamboLeftDor.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_left_dor.obj");
 	modelLamboLeftDor.setShader(&shaderMulLighting);
+
+	modelLamboLlantasDel.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_Llantas_Del.obj");
+	modelLamboLlantasDel.setShader(&shaderMulLighting);
+	modelLamboLlantasTras.loadModel("../models/Lamborginhi_Aventador_OBJ/Lamborghini_Aventador_Llantas_Trasl.obj");
+	modelLamboLlantasTras.setShader(&shaderMulLighting);
 	
 	// Dart Lego
 	modelDartLegoBody.loadModel("../models/LegoDart/LeoDart_body.obj");
@@ -405,6 +426,40 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	// Libera la memoria de la textura
 	texture2.freeImage(bitmap);
+
+	// Definiendo la textura a utilizar
+	Texture texture13("../Textures/pista.jpg");
+	// Carga el mapa de bits (FIBITMAP es el tipo de dato de la libreria)
+	// Voltear la imagen
+	bitmap = texture13.loadImage(true);
+	// Convertimos el mapa de bits en un arreglo unidimensional de tipo unsigned char
+	data = texture13.convertToData(bitmap, imageWidth, imageHeight);
+	// Creando la textura con id 1
+	glGenTextures(1, &textureID13);
+	// Enlazar esa textura a una tipo de textura de 2D.
+	glBindTexture(GL_TEXTURE_2D, textureID13);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Verifica si se pudo abrir la textura
+	if (data) {
+		// Transferis los datos de la imagen a memoria
+		// Tipo de textura, Mipmaps, Formato interno de openGL, ancho, alto, Mipmaps,
+		// Formato interno de la libreria de la imagen, el tipo de dato y al apuntador
+		// a los datos
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0,
+			GL_BGRA, GL_UNSIGNED_BYTE, data);
+		// Generan los niveles del mipmap (OpenGL es el ecargado de realizarlos)
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	// Libera la memoria de la textura
+	texture13.freeImage(bitmap);
+
 
 	// Definiendo la textura a utilizar
 	Texture texture3("../Textures/goku.png");
@@ -742,12 +797,18 @@ bool processInput(bool continueApplication) {
 
 void applicationLoop() {
 	bool psi = true;
+	float offsetAutoAdvance = 0.0;
+	float offsetAutotRot = 0.0;
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0, 1.5, 0.0));
 	float offX = 0.0;
+	float offY = 0.0;
 	float angle = 0.0;
 	float ratio = 30.0;
+	float angle2 = 0.0;
+	float ratio2 = 10.0;
+	int estadoHelicoptero = 0.0; 
 	glm::mat4 modelMatrixEclipse = glm::mat4(1.0f);
 	modelMatrixEclipse = glm::translate(modelMatrixEclipse, glm::vec3(20, 0, 10.0));
 	int state = 0;
@@ -756,9 +817,17 @@ void applicationLoop() {
 	float rotWheelsX = 0.0;
 	float rotWheelsY = 0.0;
 
+	float offsetHelicoptero2AdvanceY = 0.0;
 	glm::mat4 modelMatrixHeli = glm::mat4(1.0f);
 	modelMatrixHeli = glm::translate(modelMatrixHeli, glm::vec3(-10, 10, -4.0));
 	float rotHelHelY = 0.0;
+
+	glm::mat4 modelMatrixHeliTras = glm::mat4(1.0f);
+	modelMatrixHeliTras = glm::translate(modelMatrixHeliTras, glm::vec3(-10, 20, -9.0));
+	float rotHelHelX = 0.0;
+	float rotHelHelX2 = 0.0;
+
+	int stateLambo = 0; 
 
 	int stateDoor = 0;
 	float dorRotCount = 0.0;
@@ -1174,9 +1243,20 @@ void applicationLoop() {
 		modelHeliHeli.render(modelMatrixHeliHeli);
 		glActiveTexture(GL_TEXTURE0);
 
+		glm::mat4 modelMatrixHeliTras = glm::mat4(modelMatrixHeliChasis);
+		modelMatrixHeliTras = glm::translate(modelMatrixHeliTras, glm::vec3(0.435329, 2.19281, -5.68894));
+		modelMatrixHeliTras = glm::rotate(modelMatrixHeliTras, rotHelHelX, glm::vec3(1, 0, 0));
+		modelMatrixHeliTras = glm::translate(modelMatrixHeliTras, glm::vec3(-0.435329, -2.19281, 5.68894));
+		modelHeliTras.render(modelMatrixHeliTras);
+		glActiveTexture(GL_TEXTURE0);
+
+
+
 		// Lambo car
+
+
 		glm::mat4 modelMatrixLambo = glm::mat4(1.0);
-		modelMatrixLambo = glm::translate(modelMatrixLambo, glm::vec3(0.0, 0.0, -10.0));
+		modelMatrixLambo = glm::translate(modelMatrixLambo, glm::vec3(20.0, 0.0, -10.0));
 		modelMatrixLambo = glm::scale(modelMatrixLambo, glm::vec3(2.0, 2.0, 2.0));
 		modelLambo.render(modelMatrixLambo);
 		glActiveTexture(GL_TEXTURE0);
@@ -1186,6 +1266,27 @@ void applicationLoop() {
 		modelMatrixLamboLeftDor = glm::translate(modelMatrixLamboLeftDor, glm::vec3(-1.08676, -0.707316, -0.982601));
 		modelLamboLeftDor.render(modelMatrixLamboLeftDor);
 		glActiveTexture(GL_TEXTURE0);
+
+		//Llantas
+
+		
+		glm::mat4 modelMatrixLlantasDel = glm::mat4(modelMatrixLambo);
+		modelMatrixLlantasDel = glm::translate(modelMatrixLlantasDel, glm::vec3(1.1038, 0.73357, 1.6204));
+		modelMatrixLlantasDel = glm::rotate(modelMatrixLlantasDel, glm::radians(rotHelHelX2), glm::vec3(1.0, 0, 0));
+	    modelMatrixLlantasDel = glm::translate(modelMatrixLlantasDel, glm::vec3(-1.1038, -0.73357, -1.6204));
+		modelLamboLlantasDel.render(modelMatrixLlantasDel);
+		glActiveTexture(GL_TEXTURE0);
+
+		//Llantas Tras
+
+		glm::mat4 modelMatrixLlantasTras = glm::mat4(modelMatrixLambo);
+		modelMatrixLlantasTras = glm::translate(modelMatrixLlantasTras, glm::vec3(1.1298, 0.7034, -1.2704));
+		modelMatrixLlantasTras = glm::rotate(modelMatrixLlantasTras, glm::radians(rotHelHelX2), glm::vec3(1.0, 0, 0));
+		modelMatrixLlantasTras = glm::translate(modelMatrixLlantasTras, glm::vec3(-1.1298, -0.7034, 1.2704));
+		modelLamboLlantasTras.render(modelMatrixLlantasTras);
+		glActiveTexture(GL_TEXTURE0);
+
+
 
 		// Dart lego
 		// Se deshabilita el cull faces IMPORTANTE para la capa
@@ -1315,8 +1416,9 @@ void applicationLoop() {
 		glDepthFunc(oldDepthFuncMode);
 
 		// Constantes de animaciones
-		if (angle > 2 * M_PI)
+		if (angle > 2 * M_PI )
 			angle = 0.0;
+				
 		else
 			angle += 0.01;
 
@@ -1324,6 +1426,11 @@ void applicationLoop() {
 		rot0 = 0;
 		offX += 0.1;
 		rotHelHelY += 0.5;
+
+		dz = 0; 
+		rot1 = 0; 
+		offY += 0.1;
+		rotHelHelX += 0.5; 
 
 		// Descomentar
 		advanceDartBody = 0.0;
@@ -1361,21 +1468,74 @@ void applicationLoop() {
 			break;
 		}
 
+
+
+		//MAQUINA DE ESTADOS HELICOPTERO
+
+		switch (estadoHelicoptero) {
+		case 0:
+			std::cout << "Advance Helicoptero:" << std::endl;
+			modelMatrixHeliChasis = glm::translate(modelMatrixHeliChasis, glm::vec3(0.0, -0.01, 0.0));
+			offsetHelicoptero2AdvanceY += 0.01;
+			if (offsetHelicoptero2AdvanceY > 08.0) {
+				offsetHelicoptero2AdvanceY = 0.0;
+				estadoHelicoptero = 1;
+			}
+			break;
+		case 1: {
+
+			//Se baja la velicdad de las helices cuando aterriza
+			dz = 0;
+			rot0 = 0;
+			offX += 0.1;
+			rotHelHelY += 0.020;
+
+			dz = 0;
+			rot1 = 0;
+			offY += 0.1;
+			rotHelHelX += 0.020;
+
+		}
+			break;
+
+		}
+
+
+
 		// State machine for the lambo car
 		switch(stateDoor){
 		case 0:
+			std::cout << "Advance:" << std::endl;
+			// -0.01 debe ser igual en magnitud 
+			modelMatrixLambo = glm::translate(modelMatrixLambo, glm::vec3(0.0, 0.0, 0.01));
+			offsetAutoAdvance += 0.01;
+			if (offsetAutoAdvance > 60.0) {
+				offsetAutoAdvance = 0.0;
+				state = 1;
+			}
+			
+			break;
+
+		case 1: 
 			dorRotCount += 0.5;
-			if(dorRotCount > 75)
+			rotHelHelX2 += 1;
+
+			if (dorRotCount > 75)
 				stateDoor = 1;
 			break;
-		case 1:
+
+		case 2:
 			dorRotCount -= 0.5;
 			if(dorRotCount < 0){
 				dorRotCount = 0.0;
 				stateDoor = 0;
 			}
+
 			break;
 		}
+
+
+
 
 		glfwSwapBuffers(window);
 	}
